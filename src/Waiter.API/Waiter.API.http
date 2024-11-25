@@ -1,0 +1,11 @@
+@Waiter.API_HostAddress = http://localhost:5004/api
+
+GET {{Waiter.API_HostAddress}}/users
+Content-Type: application/json
+
+###
+
+GET {{Waiter.API_HostAddress}}/users/1
+Content-Type: application/json
+
+###
