@@ -9,4 +9,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 {
     public ApplicationDbContext(DbContextOptions options)
         : base(options) { }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="builder"></param>
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+    }
 }

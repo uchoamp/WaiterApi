@@ -1,45 +1,12 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Waiter.API.Exceptions;
+using Waiter.API;
 using Waiter.Application.Models;
-using Waiter.Domain.Models;
-using Waiter.Infra.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+ValidateSettings.Validate(builder.Configuration);
+
 builder.Services.AddApiServices();
-
-var jwtSecretKey = builder.Configuration["JWT:Key"];
-
-if (string.IsNullOrWhiteSpace(jwtSecretKey))
-    throw new InvalidConfigurationException("JWT:Key");
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseInMemoryDatabase("AppDb")
-);
-
-builder
-    .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(c =>
-    {
-        c.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateLifetime = true,
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey)),
-        };
-    });
-
-builder.Services.AddAuthorizationBuilder();
-
-builder
-    .Services.AddIdentityCore<ApplicationUser>()
-    .AddRoles<IdentityRole<Guid>>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 
