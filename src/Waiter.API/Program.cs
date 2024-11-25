@@ -1,5 +1,6 @@
 using Waiter.API;
 using Waiter.Application.Models;
+using Waiter.Infra.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddApiServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
+
+await app.InitialiseDatabaseAsync();
 
 app.UseAuthentication();
 

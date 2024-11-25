@@ -20,10 +20,6 @@ public static class DependencyInjection
         var jwtSecretKey = configuration[ApplicationSettings.JwtKey];
         var databaseConnectionString = configuration[ApplicationSettings.DatabaseConnectionString];
 
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(databaseConnectionString)
-        );
-
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(c =>
@@ -43,7 +39,15 @@ public static class DependencyInjection
             .AddIdentityCore<ApplicationUser>()
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+
         services.AddAuthorizationBuilder();
+
+        services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseNpgsql(databaseConnectionString)
+        );
+
+        services.AddScoped<ApplicationDbContextInitialiser>();
+
         return services;
     }
 }
