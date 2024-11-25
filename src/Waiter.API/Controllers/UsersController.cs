@@ -14,7 +14,8 @@ namespace Waiter.API.Controllers
     /// <param name="password"></param>
     /// <param name="email"></param>
     /// <param name="firstName"></param>
-    public record UserDto(string password, string email, string firstName) { }
+    /// <param name="lastName"></param>
+    public record UserDto(string password, string email, string firstName, string lastName) { }
 
     /// <summary>
     /// Users
@@ -45,7 +46,7 @@ namespace Waiter.API.Controllers
         public IEnumerable<UserDto> Get()
         {
             return _userManager
-                .Users.Select(x => new UserDto("******", x.Email!, x.FirstName))
+                .Users.Select(x => new UserDto("******", x.Email!, x.FirstName, x.LastName))
                 .ToList();
         }
 
@@ -72,6 +73,7 @@ namespace Waiter.API.Controllers
                 UserName = user.email,
                 Email = user.email,
                 FirstName = user.firstName,
+                LastName = user.lastName
             };
 
             var result = await _userManager.CreateAsync(appUser, user.password);
