@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
-using Waiter.Application.Models;
+using Waiter.Application.Models.Response;
 
 namespace Waiter.API.Custom
 {

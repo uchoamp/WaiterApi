@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Waiter.Domain\Waiter.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,5 @@
 using Waiter.API;
-using Waiter.Application.Models;
+using Waiter.Application.Models.Response;
 using Waiter.Infra.Data;
 
 var builder = WebApplication.CreateBuilder(args);

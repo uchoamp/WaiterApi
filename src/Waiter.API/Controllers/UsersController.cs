@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Waiter.Application.Exceptions;
-using Waiter.Application.Models;
+using Waiter.Application.Models.Response;
 using Waiter.Domain.Models;
 
 namespace Waiter.API.Controllers
@@ -65,7 +65,7 @@ namespace Waiter.API.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType<MessageResponse>(201)]
-        [ProducesResponseType<ValidationResult>(400)]
+        [ProducesResponseType<ValidationResponse>(400)]
         public async Task<MessageResponse> Post([FromBody] UserDto user)
         {
             var appUser = new ApplicationUser
@@ -95,5 +95,8 @@ namespace Waiter.API.Controllers
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
         public void Delete(int id) { }
+
+        [HttpPost("authorize")]
+        public void Authorize() { }
     }
 }
