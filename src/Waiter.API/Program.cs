@@ -6,14 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 ValidateSettings.Validate(builder.Configuration);
 
-builder.Services.AddApiServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApiServices();
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
 await app.InitialiseDatabaseAsync();
 
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 

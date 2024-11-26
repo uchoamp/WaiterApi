@@ -1,7 +1,7 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Diagnostics;
 using Waiter.Application.Exceptions;
-using Waiter.Application.Models;
+using Waiter.Application.Models.Response;
 
 namespace Waiter.API.Custom
 {
@@ -60,7 +60,7 @@ namespace Waiter.API.Custom
             httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
             httpContext.Response.ContentType = MediaTypeNames.Application.Json;
 
-            await httpContext.Response.WriteAsJsonAsync(new ValidationResult(exception));
+            await httpContext.Response.WriteAsJsonAsync(new ValidationResponse(exception));
         }
     }
 }

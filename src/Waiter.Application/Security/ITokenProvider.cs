@@ -4,6 +4,6 @@ namespace Waiter.Application.Security
 {
     public interface ITokenProvider
     {
-        Task<AccessTokenResponse> CreateAcessTokenAsync(Guid userId, string[] roles);
+        AccessTokenResponse CreateAcessTokenAsync(Guid userId, string?[] roles);
     }
 }

@@ -1,4 +1,4 @@
 ﻿namespace Waiter.Application.Models.Response
 {
-    public record AccessTokenResponse(string AccessToken, DateTime ExpiresAt) { }
+    public record AccessTokenResponse(string AccessToken, DateTime ExpiresIn) { }
 }

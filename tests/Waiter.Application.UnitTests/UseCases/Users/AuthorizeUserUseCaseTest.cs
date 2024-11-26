@@ -63,7 +63,7 @@ public class AuthorizeUserUseCaseTest
 
         _mockTokenProvider
             .Setup(x => x.CreateAcessTokenAsync(user.Id, user.Roles))
-            .ReturnsAsync(accessToken);
+            .Returns(accessToken);
 
         var result = await _sut.AuthorizeUser(credentials);
 
