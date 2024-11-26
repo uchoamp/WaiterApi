@@ -10,6 +10,7 @@ public static class DependencyInjection
         services.AddScoped<GetAllUsersUseCase>();
         services.AddScoped<GetAvailableRolesUseCase>();
         services.AddScoped<CreateUserUseCase>();
+        services.AddScoped<GetUserUseCase>();
 
         return services;
     }

@@ -21,6 +21,7 @@ namespace Waiter.API.Controllers
         private readonly GetAllUsersUseCase _getAllUsersUseCase;
         private readonly GetAvailableRolesUseCase _getAvailableRolesUseCase;
         private readonly CreateUserUseCase _createUserUseCase;
+        private readonly GetUserUseCase _getUserUseCase;
 
         /// <summary>
         ///
@@ -29,17 +30,20 @@ namespace Waiter.API.Controllers
         /// <param name="getAllUsersUseCase"></param>
         /// <param name="getAvailableRolesUseCase"></param>
         /// <param name="createUserUseCase"></param>
+        /// <param name="getUserUseCase"></param>
         public UsersController(
             AuthorizeUserUseCase authorizeUserUseCase,
             GetAllUsersUseCase getAllUsersUseCase,
             GetAvailableRolesUseCase getAvailableRolesUseCase,
-            CreateUserUseCase createUserUseCase
+            CreateUserUseCase createUserUseCase,
+            GetUserUseCase getUserUseCase
         )
         {
             _authorizeUserUseCase = authorizeUserUseCase;
             _getAllUsersUseCase = getAllUsersUseCase;
             _getAvailableRolesUseCase = getAvailableRolesUseCase;
             _createUserUseCase = createUserUseCase;
+            _getUserUseCase = getUserUseCase;
         }
 
         /// <summary>
@@ -53,12 +57,17 @@ namespace Waiter.API.Controllers
             return await _getAllUsersUseCase.Get();
         }
 
-        // GET api/<ValuesController>/5
+        /// <summary>
+        /// Get user by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        public string Get(Guid id)
+        [ProducesResponseType<UserResponse>(200)]
+        [ProducesResponseType<MessageResponse>(404)]
+        public async Task<UserResponse> Get(Guid id)
         {
-            var user = User.Identity.Name;
-            return "value";
+            return await _getUserUseCase.Get(id);
         }
 
         /// <summary>

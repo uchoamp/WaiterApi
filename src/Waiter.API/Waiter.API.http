@@ -3,7 +3,7 @@
 @Email = admin@uchoamp.dev
 @Password = Administrator1!
 
-@AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJuYW1laWQiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJyb2xlIjoiYWRtaW4iLCJuYmYiOjE3MzI2NTM4NDYsImV4cCI6MTczMjY1NzQ0NiwiaWF0IjoxNzMyNjUzODQ2fQ.7x0eh7MvcPNOZFNLl-MEWzwq6kkb4MTEiid0PdHZwUQ
+@AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJuYW1laWQiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJyb2xlIjoiYWRtaW4iLCJuYmYiOjE3MzI2NjU0MzAsImV4cCI6Mzc3MzI2NjU0MzAsImlhdCI6MTczMjY2NTQzMH0.kuYmtdPzAh5-tKV0QDct4hbZshC4f5xg3fgQVQdDze0
 
 
 POST {{Waiter.API_HostAddress}}/users/authorize
@@ -42,8 +42,9 @@ Authorization: Bearer {{AccessToken}}
 
 ###
 
-GET {{Waiter.API_HostAddress}}/users/1
+GET {{Waiter.API_HostAddress}}/users/0193652b-b5d1-7d6f-a47c-4ea04d753246
 Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
 
 
 ###

@@ -9,7 +9,7 @@ namespace Waiter.Application.Security
         Task UpdateUserAsync(UserRequest userRequest);
         Task DeleteUserAsync(Guid id);
         Task<UserResponse[]> GetUsersAsync();
-        Task<UserResponse> GetUserAsync(Guid id);
+        Task<UserResponse?> GetUserAsync(Guid id);
         Task<UserResponse?> GetUserByEmailAsync(string email);
         Task<Guid?> GetUserIdWithEmail(string email);
         Task<bool> CheckPasswordAsync(string email, string password);

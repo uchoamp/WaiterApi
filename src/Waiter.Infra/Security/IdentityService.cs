@@ -80,9 +80,22 @@ namespace Waiter.Infra.Security
                 .ToHashSet();
         }
 
-        public Task<UserResponse> GetUserAsync(Guid id)
+        public async Task<UserResponse?> GetUserAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+                return null;
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return new UserResponse(
+                user.Id,
+                user.FirstName,
+                user.LastName,
+                user.Email!,
+                roles.ToArray()
+            );
         }
 
         public async Task<UserResponse?> GetUserByEmailAsync(string email)
