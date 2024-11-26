@@ -31,6 +31,29 @@ namespace Waiter.Infra.Security
             return await _userManager.CheckPasswordAsync(user, password);
         }
 
+        public async Task<UserResponse[]> GetUsersAsync()
+        {
+            var users = await _userManager.Users.ToListAsync();
+
+            var usersReponse = new List<UserResponse>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                usersReponse.Add(
+                    new UserResponse(
+                        user.Id,
+                        user.FirstName,
+                        user.LastName,
+                        user.Email!,
+                        roles.ToArray()
+                    )
+                );
+            }
+
+            return usersReponse.ToArray();
+        }
+
         public Task CreateUserAsync(UserResquest userRequest)
         {
             throw new NotImplementedException();
@@ -81,11 +104,6 @@ namespace Waiter.Infra.Security
                 );
 
             return (await _userManager.GetRolesAsync(user)).ToArray();
-        }
-
-        public Task<UserResponse[]> GetUsersAsync()
-        {
-            throw new NotImplementedException();
         }
 
         public Task RemoveUserRoleAsync(Guid id, string role)

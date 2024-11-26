@@ -17,14 +17,20 @@ namespace Waiter.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly AuthorizeUserUseCase _authorizeUserUseCase;
+        private readonly GetAllUsersUseCase _getAllUsersUseCase;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="authorizeUserUseCase"></param>
-        public UsersController(AuthorizeUserUseCase authorizeUserUseCase)
+        /// <param name="getAllUsersUseCase"></param>
+        public UsersController(
+            AuthorizeUserUseCase authorizeUserUseCase,
+            GetAllUsersUseCase getAllUsersUseCase
+        )
         {
             _authorizeUserUseCase = authorizeUserUseCase;
+            _getAllUsersUseCase = getAllUsersUseCase;
         }
 
         /// <summary>
@@ -32,10 +38,10 @@ namespace Waiter.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AllowAnonymous]
-        public IEnumerable<string> Get()
+        [Authorize(Roles = "admin")]
+        public async Task<UserResponse[]> Get()
         {
-            return new string[0];
+            return await _getAllUsersUseCase.Get();
         }
 
         // GET api/<ValuesController>/5
@@ -74,9 +80,7 @@ namespace Waiter.API.Controllers
         [AllowAnonymous]
         [ProducesResponseType<AccessTokenResponse>(201)]
         [ProducesResponseType<ValidationResponse>(400)]
-        public async Task<AccessTokenResponse> Authorize(
-            [FromBody] UserCredentialResquest credentials
-        )
+        public async Task<AccessTokenResponse> Authorize(UserCredentialResquest credentials)
         {
             return await _authorizeUserUseCase.AuthorizeUser(credentials);
         }

@@ -1,7 +1,23 @@
-@Waiter.API_HostAddress = http://localhost:5004/api
+@Waiter.API_HostAddress = https://localhost:7247/api
+
+@Email = admin@uchoamp.dev
+@Password = Administrator1!
+
+@AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJuYW1laWQiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJyb2xlIjoiYWRtaW4iLCJuYmYiOjE3MzI2MjUzOTIsImV4cCI6MTczMjYyODk5MiwiaWF0IjoxNzMyNjI1MzkyfQ.mEpATtyPUCC2OPR58gI4K2o4eqola30a-yyxwHPsITU
+
+
+POST {{Waiter.API_HostAddress}}/users/authorize
+Content-Type: application/json
+{
+  "email": "{{Email}}",
+  "password": "{{Password}}"
+}
+
+###
 
 GET {{Waiter.API_HostAddress}}/users
 Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
 
 ###
 
