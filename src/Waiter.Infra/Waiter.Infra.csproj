@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Waiter.Application\Waiter.Application.csproj" />
     <ProjectReference Include="..\Waiter.Domain\Waiter.Domain.csproj" />
   </ItemGroup>
 

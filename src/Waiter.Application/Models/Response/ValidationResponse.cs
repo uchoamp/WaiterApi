@@ -1,21 +1,19 @@
-﻿using System.Text.Json.Serialization;
-using Waiter.Application.Exceptions;
+﻿using Waiter.Application.Exceptions;
 
-namespace Waiter.Application.Models
+namespace Waiter.Application.Models.Response
 {
-    public class ValidationResult
+    public class ValidationResponse
     {
         /// <summary>
         /// Validation errors
         /// </summary>
-        [JsonPropertyName("errors")]
         public IDictionary<string, string> Errors { get; }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="validationException"></param>
-        public ValidationResult(ValidationException validationException)
+        public ValidationResponse(ValidationException validationException)
         {
             Errors = new Dictionary<string, string>();
             foreach (var error in validationException.Errors)

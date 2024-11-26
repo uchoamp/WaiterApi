@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Waiter.Application.Security;
 using Waiter.Domain.Constants;
 using Waiter.Domain.Models;
 using Waiter.Infra.Data;
+using Waiter.Infra.Security;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -26,9 +28,11 @@ public static class DependencyInjection
             {
                 c.TokenValidationParameters = new TokenValidationParameters
                 {
+                    RequireAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuer = false,
                     ValidateAudience = false,
+                    RequireExpirationTime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(jwtSecretKey!)
                     ),
@@ -36,17 +40,20 @@ public static class DependencyInjection
             });
 
         services
-            .AddIdentityCore<ApplicationUser>()
+            .AddIdentityCore<ApplicationUser>(opt => opt.User.RequireUniqueEmail = true)
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-        services.AddAuthorizationBuilder();
+        services.AddAuthorization();
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(databaseConnectionString)
         );
 
         services.AddScoped<ApplicationDbContextInitialiser>();
+
+        services.AddScoped<IIdentityService, IdentityService>();
+        services.AddSingleton<ITokenProvider, JwtTokenProvider>();
 
         return services;
     }
