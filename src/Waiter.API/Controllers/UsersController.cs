@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Waiter.Application.Models.Request;
 using Waiter.Application.Models.Response;
 using Waiter.Application.UseCases.Users;
+using Waiter.Domain.Constants;
 
 namespace Waiter.API.Controllers
 {
     /// <summary>
-    /// Users
+    /// Users Controller
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -18,19 +19,23 @@ namespace Waiter.API.Controllers
     {
         private readonly AuthorizeUserUseCase _authorizeUserUseCase;
         private readonly GetAllUsersUseCase _getAllUsersUseCase;
+        private readonly GetAvailableRolesUseCase _getAvailableRolesUseCase;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="authorizeUserUseCase"></param>
         /// <param name="getAllUsersUseCase"></param>
+        /// <param name="getAvailableRolesUseCase"></param>
         public UsersController(
             AuthorizeUserUseCase authorizeUserUseCase,
-            GetAllUsersUseCase getAllUsersUseCase
+            GetAllUsersUseCase getAllUsersUseCase,
+            GetAvailableRolesUseCase getAvailableRolesUseCase
         )
         {
             _authorizeUserUseCase = authorizeUserUseCase;
             _getAllUsersUseCase = getAllUsersUseCase;
+            _getAvailableRolesUseCase = getAvailableRolesUseCase;
         }
 
         /// <summary>
@@ -38,7 +43,7 @@ namespace Waiter.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<UserResponse[]> Get()
         {
             return await _getAllUsersUseCase.Get();
@@ -72,13 +77,26 @@ namespace Waiter.API.Controllers
         public void Delete(int id) { }
 
         /// <summary>
+        /// Retrieve roles available
+        /// </summary>
+        /// <returns>List with the roles</returns>
+        [HttpGet("available-roles")]
+        [ProducesResponseType<string[]>(200)]
+        [ProducesResponseType<ValidationResponse>(400)]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<string[]> AvailableRoles()
+        {
+            return await _getAvailableRolesUseCase.Get();
+        }
+
+        /// <summary>
         /// Create access token
         /// </summary>
         /// <param name="credentials"></param>
         /// <returns></returns>
         [HttpPost("authorize")]
         [AllowAnonymous]
-        [ProducesResponseType<AccessTokenResponse>(201)]
+        [ProducesResponseType<AccessTokenResponse>(200)]
         [ProducesResponseType<ValidationResponse>(400)]
         public async Task<AccessTokenResponse> Authorize(UserCredentialResquest credentials)
         {

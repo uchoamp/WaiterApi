@@ -15,6 +15,12 @@ Content-Type: application/json
 
 ###
 
+GET {{Waiter.API_HostAddress}}/users/available-roles
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###
+
 GET {{Waiter.API_HostAddress}}/users
 Content-Type: application/json
 Authorization: Bearer {{AccessToken}}

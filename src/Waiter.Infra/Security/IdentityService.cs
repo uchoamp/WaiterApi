@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Waiter.Application.Exceptions;
 using Waiter.Application.Models.Request;
@@ -64,9 +65,11 @@ namespace Waiter.Infra.Security
             throw new NotImplementedException();
         }
 
-        public async Task<string?[]> GetRolesAsync()
+        public async Task<string[]> GetRolesAsync()
         {
-            return await _roleManager.Roles.Select(x => x.Name).ToArrayAsync();
+            return (await _roleManager.Roles.Where(r => r.Name != null).ToListAsync())
+                .Select(r => r.Name!.ToString())
+                .ToArray();
         }
 
         public Task<UserResponse> GetUserAsync(Guid id)
@@ -94,7 +97,7 @@ namespace Waiter.Infra.Security
             );
         }
 
-        public async Task<string?[]> GetUserRolesAsync(Guid id)
+        public async Task<string[]> GetUserRolesAsync(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
 
