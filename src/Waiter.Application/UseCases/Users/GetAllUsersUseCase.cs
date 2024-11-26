@@ -7,7 +7,7 @@ namespace Waiter.Application.UseCases.Users
     {
         private readonly IIdentityService _identityService;
 
-        public GetAllUsersUseCase(ITokenProvider tokenProvider, IIdentityService identityService)
+        public GetAllUsersUseCase(IIdentityService identityService)
         {
             _identityService = identityService;
         }

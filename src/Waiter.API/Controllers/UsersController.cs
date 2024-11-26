@@ -20,6 +20,7 @@ namespace Waiter.API.Controllers
         private readonly AuthorizeUserUseCase _authorizeUserUseCase;
         private readonly GetAllUsersUseCase _getAllUsersUseCase;
         private readonly GetAvailableRolesUseCase _getAvailableRolesUseCase;
+        private readonly CreateUserUseCase _createUserUseCase;
 
         /// <summary>
         ///
@@ -27,15 +28,18 @@ namespace Waiter.API.Controllers
         /// <param name="authorizeUserUseCase"></param>
         /// <param name="getAllUsersUseCase"></param>
         /// <param name="getAvailableRolesUseCase"></param>
+        /// <param name="createUserUseCase"></param>
         public UsersController(
             AuthorizeUserUseCase authorizeUserUseCase,
             GetAllUsersUseCase getAllUsersUseCase,
-            GetAvailableRolesUseCase getAvailableRolesUseCase
+            GetAvailableRolesUseCase getAvailableRolesUseCase,
+            CreateUserUseCase createUserUseCase
         )
         {
             _authorizeUserUseCase = authorizeUserUseCase;
             _getAllUsersUseCase = getAllUsersUseCase;
             _getAvailableRolesUseCase = getAvailableRolesUseCase;
+            _createUserUseCase = createUserUseCase;
         }
 
         /// <summary>
@@ -51,22 +55,31 @@ namespace Waiter.API.Controllers
 
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string Get(Guid id)
         {
             var user = User.Identity.Name;
             return "value";
         }
 
         /// <summary>
-        ///
+        /// Create a user with roles
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="userRequset"></param>
         /// <returns></returns>
         [HttpPost]
-        [AllowAnonymous]
-        [ProducesResponseType<MessageResponse>(201)]
+        [Authorize(Roles = Roles.Admin)]
+        [ProducesResponseType<UserResponse>(201)]
         [ProducesResponseType<ValidationResponse>(400)]
-        public async Task Post([FromBody] string name) { }
+        public async Task<UserResponse> Post(UserRequest userRequset)
+        {
+            var userResponse = await _createUserUseCase.Create(userRequset);
+
+            var locationUser = $"{Request.Scheme}://{Request.Host}{Request.Path}/{userRequset.Id}";
+
+            Response.Headers["Location"] = locationUser;
+
+            return userResponse;
+        }
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
@@ -81,10 +94,10 @@ namespace Waiter.API.Controllers
         /// </summary>
         /// <returns>List with the roles</returns>
         [HttpGet("available-roles")]
-        [ProducesResponseType<string[]>(200)]
+        [ProducesResponseType<HashSet<string>>(200)]
         [ProducesResponseType<ValidationResponse>(400)]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<string[]> AvailableRoles()
+        public async Task<HashSet<string>> AvailableRoles()
         {
             return await _getAvailableRolesUseCase.Get();
         }

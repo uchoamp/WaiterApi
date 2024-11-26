@@ -1,7 +1,5 @@
-﻿using System.Globalization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Waiter.Application.Exceptions;
 using Waiter.Application.Models.Request;
 using Waiter.Application.Models.Response;
 using Waiter.Application.Security;
@@ -55,9 +53,19 @@ namespace Waiter.Infra.Security
             return usersReponse.ToArray();
         }
 
-        public Task CreateUserAsync(UserResquest userRequest)
+        public async Task CreateUserAsync(UserRequest userRequest)
         {
-            throw new NotImplementedException();
+            var user = new ApplicationUser
+            {
+                FirstName = userRequest.FirstName,
+                LastName = userRequest.LastName,
+                Email = userRequest.Email,
+                UserName = userRequest.Email
+            };
+
+            await _userManager.CreateAsync(user, userRequest.Password);
+
+            await _userManager.AddToRolesAsync(user, userRequest.Roles);
         }
 
         public Task DeleteUserAsync(Guid id)
@@ -65,11 +73,11 @@ namespace Waiter.Infra.Security
             throw new NotImplementedException();
         }
 
-        public async Task<string[]> GetRolesAsync()
+        public async Task<HashSet<string>> GetRolesAsync()
         {
             return (await _roleManager.Roles.Where(r => r.Name != null).ToListAsync())
                 .Select(r => r.Name!.ToString())
-                .ToArray();
+                .ToHashSet();
         }
 
         public Task<UserResponse> GetUserAsync(Guid id)
@@ -77,14 +85,12 @@ namespace Waiter.Infra.Security
             throw new NotImplementedException();
         }
 
-        public async Task<UserResponse> GetUserByEmailAsync(string email)
+        public async Task<UserResponse?> GetUserByEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
-                throw new ValidationException(
-                    new ValidationItem("UserNotFound", $"User not found for email {email}")
-                );
+                return null;
 
             var roles = await _userManager.GetRolesAsync(user);
 
@@ -97,16 +103,14 @@ namespace Waiter.Infra.Security
             );
         }
 
-        public async Task<string[]> GetUserRolesAsync(Guid id)
+        public async Task<HashSet<string>?> GetUserRolesAsync(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
 
             if (user == null)
-                throw new ValidationException(
-                    new ValidationItem("UserNotFound", "User not found.")
-                );
+                return null;
 
-            return (await _userManager.GetRolesAsync(user)).ToArray();
+            return (await _userManager.GetRolesAsync(user)).ToHashSet();
         }
 
         public Task RemoveUserRoleAsync(Guid id, string role)
@@ -119,9 +123,14 @@ namespace Waiter.Infra.Security
             throw new NotImplementedException();
         }
 
-        public Task UpdateUserAsync(UserResquest userRequest)
+        public Task UpdateUserAsync(UserRequest userRequest)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Guid?> GetUserIdWithEmail(string email)
+        {
+            return (await _userManager.FindByEmailAsync(email))?.Id;
         }
     }
 }

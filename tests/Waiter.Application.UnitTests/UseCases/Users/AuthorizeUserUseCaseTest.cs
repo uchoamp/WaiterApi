@@ -31,7 +31,7 @@ public class AuthorizeUserUseCaseTest
 
         await _sut.Invoking(x => x.AuthorizeUser(credentials))
             .Should()
-            .ThrowExactlyAsync<ValidationException>();
+            .ThrowExactlyAsync<ApplicationValidationException>();
 
         _mockIdentityService.Verify(
             x => x.CheckPasswordAsync(credentials.Email, credentials.Password),

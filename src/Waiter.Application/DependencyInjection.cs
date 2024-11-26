@@ -9,6 +9,7 @@ public static class DependencyInjection
         services.AddScoped<AuthorizeUserUseCase>();
         services.AddScoped<GetAllUsersUseCase>();
         services.AddScoped<GetAvailableRolesUseCase>();
+        services.AddScoped<CreateUserUseCase>();
 
         return services;
     }

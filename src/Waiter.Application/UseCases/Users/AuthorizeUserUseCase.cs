@@ -24,13 +24,13 @@ namespace Waiter.Application.UseCases.Users
             );
 
             if (!accessAthorized)
-                throw new ValidationException(
+                throw new ApplicationValidationException(
                     new ValidationItem("EmailOrPasswordInvalid", "Email or password invalid.")
                 );
 
             var user = await _identityService.GetUserByEmailAsync(credentials.Email);
 
-            return _tokenProvider.CreateAcessTokenAsync(user.Id, user.Roles);
+            return _tokenProvider.CreateAcessTokenAsync(user!.Id, user.Roles);
         }
     }
 }

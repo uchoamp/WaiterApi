@@ -40,7 +40,14 @@ public static class DependencyInjection
             });
 
         services
-            .AddIdentityCore<ApplicationUser>(opt => opt.User.RequireUniqueEmail = true)
+            .AddIdentityCore<ApplicationUser>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireDigit = true;
+                opt.Password.RequireUppercase = true;
+                opt.Password.RequiredLength = 8;
+            })
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 

@@ -6,15 +6,12 @@ namespace Waiter.Application.UseCases.Users
     {
         private readonly IIdentityService _identityService;
 
-        public GetAvailableRolesUseCase(
-            ITokenProvider tokenProvider,
-            IIdentityService identityService
-        )
+        public GetAvailableRolesUseCase(IIdentityService identityService)
         {
             _identityService = identityService;
         }
 
-        public async Task<string[]> Get()
+        public async Task<HashSet<string>> Get()
         {
             return await _identityService.GetRolesAsync();
         }

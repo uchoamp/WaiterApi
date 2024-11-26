@@ -3,7 +3,7 @@
 @Email = admin@uchoamp.dev
 @Password = Administrator1!
 
-@AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJuYW1laWQiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJyb2xlIjoiYWRtaW4iLCJuYmYiOjE3MzI2MjUzOTIsImV4cCI6MTczMjYyODk5MiwiaWF0IjoxNzMyNjI1MzkyfQ.mEpATtyPUCC2OPR58gI4K2o4eqola30a-yyxwHPsITU
+@AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJuYW1laWQiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJyb2xlIjoiYWRtaW4iLCJuYmYiOjE3MzI2NTM4NDYsImV4cCI6MTczMjY1NzQ0NiwiaWF0IjoxNzMyNjUzODQ2fQ.7x0eh7MvcPNOZFNLl-MEWzwq6kkb4MTEiid0PdHZwUQ
 
 
 POST {{Waiter.API_HostAddress}}/users/authorize
@@ -21,6 +21,21 @@ Authorization: Bearer {{AccessToken}}
 
 ###
 
+POST {{Waiter.API_HostAddress}}/users
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+{
+  "firstName": "Marcos",
+  "lastName": "Uchoa",
+  "email": "marcos@uchoamp.dev",
+  "password": "Pass1234!",
+  "roles": [
+    "admin"
+  ]
+}
+
+###
+
 GET {{Waiter.API_HostAddress}}/users
 Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
@@ -30,4 +45,9 @@ Authorization: Bearer {{AccessToken}}
 GET {{Waiter.API_HostAddress}}/users/1
 Content-Type: application/json
 
+
 ###
+
+
+
+
