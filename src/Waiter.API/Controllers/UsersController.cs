@@ -23,6 +23,7 @@ namespace Waiter.API.Controllers
         private readonly CreateUserUseCase _createUserUseCase;
         private readonly GetUserUseCase _getUserUseCase;
         private readonly UpdateUserUseCase _updateUserUseCase;
+        private readonly DeleteUserUseCase _deleteUserUseCase;
 
         /// <summary>
         ///
@@ -33,13 +34,15 @@ namespace Waiter.API.Controllers
         /// <param name="createUserUseCase"></param>
         /// <param name="getUserUseCase"></param>
         /// <param name="updateUserUseCase"></param>
+        /// <param name="deleteUserUseCase"></param>
         public UsersController(
             AuthorizeUserUseCase authorizeUserUseCase,
             GetAllUsersUseCase getAllUsersUseCase,
             GetAvailableRolesUseCase getAvailableRolesUseCase,
             CreateUserUseCase createUserUseCase,
             GetUserUseCase getUserUseCase,
-            UpdateUserUseCase updateUserUseCase
+            UpdateUserUseCase updateUserUseCase,
+            DeleteUserUseCase deleteUserUseCase
         )
         {
             _authorizeUserUseCase = authorizeUserUseCase;
@@ -48,6 +51,7 @@ namespace Waiter.API.Controllers
             _createUserUseCase = createUserUseCase;
             _getUserUseCase = getUserUseCase;
             _updateUserUseCase = updateUserUseCase;
+            _deleteUserUseCase = deleteUserUseCase;
         }
 
         /// <summary>
@@ -109,9 +113,18 @@ namespace Waiter.API.Controllers
             );
         }
 
-        // DELETE api/<ValuesController>/5
+        /// <summary>
+        /// Delete a user
+        /// </summary>
+        /// <param name="id">User Id</param>
+        /// <returns></returns>
         [HttpDelete("{id:guid}")]
-        public void Delete(int id) { }
+        [Authorize(Roles = Roles.Admin)]
+        [ProducesResponseType<MessageResponse>(200)]
+        public async Task<MessageResponse> Delete(Guid id)
+        {
+            return await _deleteUserUseCase.Delete(id);
+        }
 
         /// <summary>
         /// Retrieve roles available

@@ -68,9 +68,14 @@ namespace Waiter.Infra.Security
             await _userManager.AddToRolesAsync(user, userRequest.Roles);
         }
 
-        public Task DeleteUserAsync(Guid id)
+        public async Task DeleteUserAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+                return;
+
+            await _userManager.DeleteAsync(user);
         }
 
         public async Task<HashSet<string>> GetRolesAsync()

@@ -42,7 +42,7 @@ Authorization: Bearer {{AccessToken}}
 
 ###
 
-GET {{Waiter.API_HostAddress}}/users/0193652b-b5d1-7d6f-a47c-4ea04d753248
+GET {{Waiter.API_HostAddress}}/users/01936a3b-c458-705f-953d-36b98e4bed95
 Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 
@@ -57,5 +57,11 @@ Authorization: Bearer {{AccessToken}}
   "lastName": "Uchoa",
   "email": "marcos@uchoamp.dev"
 }
+
+###
+
+DELETE {{Waiter.API_HostAddress}}/users/01936a3b-c458-705f-953d-36b98e4bed95
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
 
 ###
