@@ -7,7 +7,8 @@
         public int CurrentPage { get; }
         public int PageSize { get; }
         public int TotalEntities { get; }
-        public int LastPage { get; }
+        public int LastPage =>
+            PageSize == 0 ? 1 : (int)Math.Ceiling((double)TotalEntities / PageSize);
 
         public PaginatedResult(
             List<TEntity> result,

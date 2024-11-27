@@ -7,10 +7,10 @@ namespace Waiter.Domain.Repositories
     {
         public Task<IEnumerable<TEntity>> LoadAllAsync();
         public Task<TEntity> GetByIdAsync(Guid id);
-        public Task<PaginatedResult<TEntity>> PaginateAsync(PaginatedLimits limits);
+        public Task<PaginatedResult<TEntity>> PaginateAsync(PaginationLimits limits);
         public Task CreateAsync(TEntity entity);
-        public Task UpdateAsync(TEntity entity);
-        public Task DeleteAsync(Guid id);
+        public void UpdateAsync(TEntity entity);
+        public void DeleteAsync(TEntity entity);
         public Task SaveChangesAsync();
     }
 
@@ -20,7 +20,7 @@ namespace Waiter.Domain.Repositories
         public Task<List<TEntity>> FilterAsync(TFilter filter);
         public Task<PaginatedResult<TEntity>> FilterAndPaginateAsync(
             TFilter filter,
-            PaginatedLimits limits
+            PaginationLimits limits
         );
     }
 }
