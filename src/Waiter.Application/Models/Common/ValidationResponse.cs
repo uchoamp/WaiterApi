@@ -1,6 +1,6 @@
 ﻿using Waiter.Application.Exceptions;
 
-namespace Waiter.Application.Models.Response
+namespace Waiter.Application.Models.Common
 {
     public class ValidationResponse
     {

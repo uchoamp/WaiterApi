@@ -1,6 +1,6 @@
 ﻿using Waiter.Application.Exceptions;
-using Waiter.Application.Models.Request;
-using Waiter.Application.Models.Response;
+using Waiter.Application.Models.Common;
+using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
 
 namespace Waiter.Application.UseCases.Users

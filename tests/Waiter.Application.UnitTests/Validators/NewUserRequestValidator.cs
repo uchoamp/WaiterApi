@@ -1,4 +1,4 @@
-using Waiter.Application.Models.Request;
+using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
 using Waiter.Application.Validators;
 
@@ -20,6 +20,7 @@ public class UserRequestValidatorTest
             "Marcos",
             "Uchoa",
             "marcos@email.com",
+            "86981372880",
             "Password123!",
             new[] { "admin" }
         );
@@ -137,6 +138,26 @@ public class UserRequestValidatorTest
         _mockIdentityService.Setup(x => x.GetRolesAsync()).ReturnsAsync(databaseRoles.ToHashSet());
 
         var user = _validUser with { Roles = roles };
+
+        var result = await _validator.ValidateAsync(user);
+
+        result.IsValid.Should().BeFalse();
+
+        var errorCodes = result.Errors.Select(x => x.ErrorCode);
+
+        errorCodes.Should().Contain(expectedCodes);
+    }
+
+    [Theory]
+    [InlineData(null, new[] { "PhoneNumberRequired" })]
+    [InlineData("", new[] { "PhoneNumberRequired" })]
+    [InlineData("1234", new[] { "PhoneNumberInvalid" })]
+    [InlineData("869817328800", new[] { "PhoneNumberInvalid" })]
+    [InlineData("06981732880", new[] { "PhoneNumberInvalid" })]
+    [InlineData("8601732880", new[] { "PhoneNumberInvalid" })]
+    public async Task ShouldValidatedPhoneNumber(string phoneNumber, string[] expectedCodes)
+    {
+        var user = _validUser with { PhoneNumber = phoneNumber };
 
         var result = await _validator.ValidateAsync(user);
 

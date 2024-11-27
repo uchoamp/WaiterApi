@@ -1,6 +1,5 @@
 using Waiter.Application.Exceptions;
-using Waiter.Application.Models.Request;
-using Waiter.Application.Models.Response;
+using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
 using Waiter.Application.UseCases.Users;
 
@@ -22,6 +21,7 @@ public class CreateUserUseCaseTest
             "Marcos",
             "Uchoa",
             "marcos@email.com",
+            "86981732880",
             "Password123!",
             new[] { "admin" }
         );
@@ -50,6 +50,7 @@ public class CreateUserUseCaseTest
             _validUser.FirstName,
             _validUser.LastName,
             _validUser.Email,
+            _validUser.PhoneNumber,
             _validUser.Roles
         );
 

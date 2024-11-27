@@ -1,4 +1,4 @@
-using Waiter.Application.Models.Request;
+using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
 using Waiter.Application.Validators;
 
@@ -12,11 +12,30 @@ public class UpdateUserRequestValidatorTest
 
     public UpdateUserRequestValidatorTest()
     {
+        _validUser = new UpdateUserRequest(
+            Guid.NewGuid(),
+            "Marcos",
+            "Uchoa",
+            "86981732880",
+            "marcos@email.com"
+        );
+
         _mockIdentityService = new Mock<IIdentityService>();
 
-        _validator = new UpdateUserRequestValidator(_mockIdentityService.Object);
+        _mockIdentityService
+            .Setup(x => x.GetUserAsync(_validUser.Id))
+            .ReturnsAsync(
+                new UserResponse(
+                    _validUser.Id,
+                    _validUser.FirstName,
+                    _validUser.LastName,
+                    _validUser.Email,
+                    _validUser.PhoneNumber,
+                    new string[0]
+                )
+            );
 
-        _validUser = new UpdateUserRequest(Guid.NewGuid(), "Marcos", "Uchoa", "marcos@email.com");
+        _validator = new UpdateUserRequestValidator(_mockIdentityService.Object);
 
         _mockIdentityService
             .Setup(x => x.GetRolesAsync())
@@ -100,11 +119,10 @@ public class UpdateUserRequestValidatorTest
     [Fact]
     public async Task ShouldBeValidIfEmailIsTheSameOnUpdate()
     {
-        var userId = Guid.NewGuid();
         var email = "teste@email.com";
-        var user = _validUser with { Email = email, Id = userId };
+        var user = _validUser with { Email = email };
 
-        _mockIdentityService.Setup(x => x.GetUserIdWithEmail(email)).ReturnsAsync(userId);
+        _mockIdentityService.Setup(x => x.GetUserIdWithEmail(email)).ReturnsAsync(_validUser.Id);
 
         var result = await _validator.ValidateAsync(user);
 
@@ -133,5 +151,25 @@ public class UpdateUserRequestValidatorTest
         errorCodes = result.Errors.Select(x => x.ErrorCode);
 
         errorCodes.Should().Contain(new[] { "UserNotFoundForId" });
+    }
+
+    [Theory]
+    [InlineData(null, new[] { "PhoneNumberRequired" })]
+    [InlineData("", new[] { "PhoneNumberRequired" })]
+    [InlineData("1234", new[] { "PhoneNumberInvalid" })]
+    [InlineData("869817328800", new[] { "PhoneNumberInvalid" })]
+    [InlineData("06981732880", new[] { "PhoneNumberInvalid" })]
+    [InlineData("8601732880", new[] { "PhoneNumberInvalid" })]
+    public async Task ShouldValidatedPhoneNumber(string phoneNumber, string[] expectedCodes)
+    {
+        var user = _validUser with { PhoneNumber = phoneNumber };
+
+        var result = await _validator.ValidateAsync(user);
+
+        result.IsValid.Should().BeFalse();
+
+        var errorCodes = result.Errors.Select(x => x.ErrorCode);
+
+        errorCodes.Should().Contain(expectedCodes);
     }
 }

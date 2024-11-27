@@ -26,9 +26,10 @@ Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 {
   "firstName": "Marcos",
-  "lastName": "Uchoa",
-  "email": "marcos@uchoamp.dev",
+  "lastName": "Pacheco",
+  "email": "pacheco@uchoamp.dev",
   "password": "Pass1234!",
+  "phoneNumber": "86981732880",
   "roles": [
     "admin"
   ]
@@ -52,10 +53,11 @@ PUT {{Waiter.API_HostAddress}}/users
 Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 {
-  "id": "01936a3b-c458-705f-953d-36b98e4bed95",
+  "id": "01936b96-991d-77bc-b66d-9491bc058567",
   "firstName": "Marcos",
   "lastName": "Uchoa",
-  "email": "marcos@uchoamp.dev"
+  "email": "marcos@uchoamp.dev",
+  "phoneNumber": "86981732880"
 }
 
 ###

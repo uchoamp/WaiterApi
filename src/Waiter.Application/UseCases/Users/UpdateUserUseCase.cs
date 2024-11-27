@@ -1,6 +1,5 @@
 ﻿using Waiter.Application.Exceptions;
-using Waiter.Application.Models.Request;
-using Waiter.Application.Models.Response;
+using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
 using Waiter.Application.Validators;
 

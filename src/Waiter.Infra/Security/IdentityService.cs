@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Waiter.Application.Models.Request;
-using Waiter.Application.Models.Response;
+using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
 using Waiter.Domain.Models;
 
@@ -45,6 +44,7 @@ namespace Waiter.Infra.Security
                         user.FirstName,
                         user.LastName,
                         user.Email!,
+                        user.PhoneNumber!,
                         roles.ToArray()
                     )
                 );
@@ -60,7 +60,8 @@ namespace Waiter.Infra.Security
                 FirstName = userRequest.FirstName,
                 LastName = userRequest.LastName,
                 Email = userRequest.Email,
-                UserName = userRequest.Email
+                UserName = userRequest.Email,
+                PhoneNumber = userRequest.PhoneNumber,
             };
 
             await _userManager.CreateAsync(user, userRequest.Password);
@@ -99,6 +100,7 @@ namespace Waiter.Infra.Security
                 user.FirstName,
                 user.LastName,
                 user.Email!,
+                user.PhoneNumber!,
                 roles.ToArray()
             );
         }
@@ -117,6 +119,7 @@ namespace Waiter.Infra.Security
                 user.FirstName,
                 user.LastName,
                 user.Email!,
+                user.PhoneNumber!,
                 roles.ToArray()
             );
         }
@@ -152,6 +155,7 @@ namespace Waiter.Infra.Security
             user.Email = modifiedUser.Email;
             user.FirstName = modifiedUser.FirstName;
             user.LastName = modifiedUser.LastName;
+            user.PhoneNumber = modifiedUser.PhoneNumber;
 
             await _userManager.UpdateAsync(user);
         }

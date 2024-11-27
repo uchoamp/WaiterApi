@@ -1,7 +1,7 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Diagnostics;
 using Waiter.Application.Exceptions;
-using Waiter.Application.Models.Response;
+using Waiter.Application.Models.Common;
 
 namespace Waiter.API.Custom
 {
