@@ -7,6 +7,12 @@ public static class DependencyInjection
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddScoped<AuthorizeUserUseCase>();
+        services.AddScoped<GetAllUsersUseCase>();
+        services.AddScoped<GetAvailableRolesUseCase>();
+        services.AddScoped<CreateUserUseCase>();
+        services.AddScoped<GetUserUseCase>();
+        services.AddScoped<UpdateUserUseCase>();
+        services.AddScoped<DeleteUserUseCase>();
 
         return services;
     }

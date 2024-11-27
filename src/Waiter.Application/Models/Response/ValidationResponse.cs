@@ -13,7 +13,7 @@ namespace Waiter.Application.Models.Response
         ///
         /// </summary>
         /// <param name="validationException"></param>
-        public ValidationResponse(ValidationException validationException)
+        public ValidationResponse(ApplicationValidationException validationException)
         {
             Errors = new Dictionary<string, string>();
             foreach (var error in validationException.Errors)

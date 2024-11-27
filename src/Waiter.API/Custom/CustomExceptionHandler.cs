@@ -19,7 +19,8 @@ namespace Waiter.API.Custom
         {
             _exceptionHandlers = new()
             {
-                { typeof(ValidationException), HandleValidationException }
+                { typeof(ApplicationValidationException), HandleValidationException },
+                { typeof(ResourceNotFoundException), HandleResourceNotFoundException }
             };
         }
 
@@ -55,12 +56,31 @@ namespace Waiter.API.Custom
         /// <returns></returns>
         private static async Task HandleValidationException(HttpContext httpContext, Exception ex)
         {
-            var exception = (ValidationException)ex;
+            var exception = (ApplicationValidationException)ex;
 
             httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
             httpContext.Response.ContentType = MediaTypeNames.Application.Json;
 
             await httpContext.Response.WriteAsJsonAsync(new ValidationResponse(exception));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        private static async Task HandleResourceNotFoundException(
+            HttpContext httpContext,
+            Exception ex
+        )
+        {
+            var exception = (ResourceNotFoundException)ex;
+
+            httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+            httpContext.Response.ContentType = MediaTypeNames.Application.Json;
+
+            await httpContext.Response.WriteAsJsonAsync(new MessageResponse(exception.Message));
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Waiter.Application.Exceptions;
 using Waiter.Application.Models.Request;
 using Waiter.Application.Models.Response;
 using Waiter.Application.Security;
@@ -31,34 +30,67 @@ namespace Waiter.Infra.Security
             return await _userManager.CheckPasswordAsync(user, password);
         }
 
-        public Task CreateUserAsync(UserResquest userRequest)
+        public async Task<UserResponse[]> GetUsersAsync()
         {
-            throw new NotImplementedException();
+            var users = await _userManager.Users.ToListAsync();
+
+            var usersReponse = new List<UserResponse>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                usersReponse.Add(
+                    new UserResponse(
+                        user.Id,
+                        user.FirstName,
+                        user.LastName,
+                        user.Email!,
+                        roles.ToArray()
+                    )
+                );
+            }
+
+            return usersReponse.ToArray();
         }
 
-        public Task DeleteUserAsync(Guid id)
+        public async Task CreateUserAsync(NewUserRequest userRequest)
         {
-            throw new NotImplementedException();
+            var user = new ApplicationUser
+            {
+                FirstName = userRequest.FirstName,
+                LastName = userRequest.LastName,
+                Email = userRequest.Email,
+                UserName = userRequest.Email
+            };
+
+            await _userManager.CreateAsync(user, userRequest.Password);
+
+            await _userManager.AddToRolesAsync(user, userRequest.Roles);
         }
 
-        public async Task<string?[]> GetRolesAsync()
+        public async Task DeleteUserAsync(Guid id)
         {
-            return await _roleManager.Roles.Select(x => x.Name).ToArrayAsync();
-        }
-
-        public Task<UserResponse> GetUserAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<UserResponse> GetUserByEmailAsync(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByIdAsync(id.ToString());
 
             if (user == null)
-                throw new ValidationException(
-                    new ValidationItem("UserNotFound", $"User not found for email {email}")
-                );
+                return;
+
+            await _userManager.DeleteAsync(user);
+        }
+
+        public async Task<HashSet<string>> GetRolesAsync()
+        {
+            return (await _roleManager.Roles.Where(r => r.Name != null).ToListAsync())
+                .Select(r => r.Name!.ToString())
+                .ToHashSet();
+        }
+
+        public async Task<UserResponse?> GetUserAsync(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+                return null;
 
             var roles = await _userManager.GetRolesAsync(user);
 
@@ -71,21 +103,32 @@ namespace Waiter.Infra.Security
             );
         }
 
-        public async Task<string?[]> GetUserRolesAsync(Guid id)
+        public async Task<UserResponse?> GetUserByEmailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+                return null;
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return new UserResponse(
+                user.Id,
+                user.FirstName,
+                user.LastName,
+                user.Email!,
+                roles.ToArray()
+            );
+        }
+
+        public async Task<HashSet<string>?> GetUserRolesAsync(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
 
             if (user == null)
-                throw new ValidationException(
-                    new ValidationItem("UserNotFound", "User not found.")
-                );
+                return null;
 
-            return (await _userManager.GetRolesAsync(user)).ToArray();
-        }
-
-        public Task<UserResponse[]> GetUsersAsync()
-        {
-            throw new NotImplementedException();
+            return (await _userManager.GetRolesAsync(user)).ToHashSet();
         }
 
         public Task RemoveUserRoleAsync(Guid id, string role)
@@ -98,9 +141,24 @@ namespace Waiter.Infra.Security
             throw new NotImplementedException();
         }
 
-        public Task UpdateUserAsync(UserResquest userRequest)
+        public async Task UpdateUserAsync(UpdateUserRequest modifiedUser)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(modifiedUser.Id.ToString());
+
+            if (user == null)
+                return;
+
+            user.UserName = modifiedUser.Email;
+            user.Email = modifiedUser.Email;
+            user.FirstName = modifiedUser.FirstName;
+            user.LastName = modifiedUser.LastName;
+
+            await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<Guid?> GetUserIdWithEmail(string email)
+        {
+            return (await _userManager.FindByEmailAsync(email))?.Id;
         }
     }
 }

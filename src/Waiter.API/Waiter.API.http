@@ -1,11 +1,67 @@
-@Waiter.API_HostAddress = http://localhost:5004/api
+@Waiter.API_HostAddress = https://localhost:7247/api
 
-GET {{Waiter.API_HostAddress}}/users
+@Email = admin@uchoamp.dev
+@Password = Administrator1!
+
+@AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJuYW1laWQiOiIwMTkzNjUyYi1iNWQxLTdkNmYtYTQ3Yy00ZWEwNGQ3NTMyNDgiLCJyb2xlIjoiYWRtaW4iLCJuYmYiOjE3MzI2NjU0MzAsImV4cCI6Mzc3MzI2NjU0MzAsImlhdCI6MTczMjY2NTQzMH0.kuYmtdPzAh5-tKV0QDct4hbZshC4f5xg3fgQVQdDze0
+
+
+POST {{Waiter.API_HostAddress}}/users/authorize
 Content-Type: application/json
+{
+  "email": "{{Email}}",
+  "password": "{{Password}}"
+}
 
 ###
 
-GET {{Waiter.API_HostAddress}}/users/1
+GET {{Waiter.API_HostAddress}}/users/available-roles
 Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###
+
+POST {{Waiter.API_HostAddress}}/users
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+{
+  "firstName": "Marcos",
+  "lastName": "Uchoa",
+  "email": "marcos@uchoamp.dev",
+  "password": "Pass1234!",
+  "roles": [
+    "admin"
+  ]
+}
+
+###
+
+GET {{Waiter.API_HostAddress}}/users
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###
+
+GET {{Waiter.API_HostAddress}}/users/01936a3b-c458-705f-953d-36b98e4bed95
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###
+
+PUT {{Waiter.API_HostAddress}}/users
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+{
+  "id": "01936a3b-c458-705f-953d-36b98e4bed95",
+  "firstName": "Marcos",
+  "lastName": "Uchoa",
+  "email": "marcos@uchoamp.dev"
+}
+
+###
+
+DELETE {{Waiter.API_HostAddress}}/users/01936a3b-c458-705f-953d-36b98e4bed95
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
 
 ###
