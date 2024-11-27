@@ -10,7 +10,7 @@ public class CreateUserUseCaseTest
 {
     private readonly CreateUserUseCase _sut;
     private readonly Mock<IIdentityService> _mockIdentityService;
-    private readonly UserRequest _validUser;
+    private readonly NewUserRequest _validUser;
 
     public CreateUserUseCaseTest()
     {
@@ -18,8 +18,7 @@ public class CreateUserUseCaseTest
 
         _sut = new CreateUserUseCase(_mockIdentityService.Object);
 
-        _validUser = new UserRequest(
-            null,
+        _validUser = new NewUserRequest(
             "Marcos",
             "Uchoa",
             "marcos@email.com",

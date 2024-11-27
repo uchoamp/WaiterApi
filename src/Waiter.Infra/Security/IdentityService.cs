@@ -53,7 +53,7 @@ namespace Waiter.Infra.Security
             return usersReponse.ToArray();
         }
 
-        public async Task CreateUserAsync(UserRequest userRequest)
+        public async Task CreateUserAsync(NewUserRequest userRequest)
         {
             var user = new ApplicationUser
             {
@@ -136,9 +136,19 @@ namespace Waiter.Infra.Security
             throw new NotImplementedException();
         }
 
-        public Task UpdateUserAsync(UserRequest userRequest)
+        public async Task UpdateUserAsync(UpdateUserRequest modifiedUser)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(modifiedUser.Id.ToString());
+
+            if (user == null)
+                return;
+
+            user.UserName = modifiedUser.Email;
+            user.Email = modifiedUser.Email;
+            user.FirstName = modifiedUser.FirstName;
+            user.LastName = modifiedUser.LastName;
+
+            await _userManager.UpdateAsync(user);
         }
 
         public async Task<Guid?> GetUserIdWithEmail(string email)

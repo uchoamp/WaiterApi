@@ -22,6 +22,7 @@ namespace Waiter.API.Controllers
         private readonly GetAvailableRolesUseCase _getAvailableRolesUseCase;
         private readonly CreateUserUseCase _createUserUseCase;
         private readonly GetUserUseCase _getUserUseCase;
+        private readonly UpdateUserUseCase _updateUserUseCase;
 
         /// <summary>
         ///
@@ -31,12 +32,14 @@ namespace Waiter.API.Controllers
         /// <param name="getAvailableRolesUseCase"></param>
         /// <param name="createUserUseCase"></param>
         /// <param name="getUserUseCase"></param>
+        /// <param name="updateUserUseCase"></param>
         public UsersController(
             AuthorizeUserUseCase authorizeUserUseCase,
             GetAllUsersUseCase getAllUsersUseCase,
             GetAvailableRolesUseCase getAvailableRolesUseCase,
             CreateUserUseCase createUserUseCase,
-            GetUserUseCase getUserUseCase
+            GetUserUseCase getUserUseCase,
+            UpdateUserUseCase updateUserUseCase
         )
         {
             _authorizeUserUseCase = authorizeUserUseCase;
@@ -44,6 +47,7 @@ namespace Waiter.API.Controllers
             _getAvailableRolesUseCase = getAvailableRolesUseCase;
             _createUserUseCase = createUserUseCase;
             _getUserUseCase = getUserUseCase;
+            _updateUserUseCase = updateUserUseCase;
         }
 
         /// <summary>
@@ -79,23 +83,34 @@ namespace Waiter.API.Controllers
         [Authorize(Roles = Roles.Admin)]
         [ProducesResponseType<UserResponse>(201)]
         [ProducesResponseType<ValidationResponse>(400)]
-        public async Task<UserResponse> Post(UserRequest userRequset)
+        public async Task<UserResponse> Post(NewUserRequest userRequset)
         {
             var userResponse = await _createUserUseCase.Create(userRequset);
 
-            var locationUser = $"{Request.Scheme}://{Request.Host}{Request.Path}/{userRequset.Id}";
+            var locationUser = $"{Request.Scheme}://{Request.Host}{Request.Path}/{userResponse.Id}";
 
             Response.Headers["Location"] = locationUser;
 
             return userResponse;
         }
 
-        // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value) { }
+        /// <summary>
+        /// Update user details
+        /// </summary>
+        /// <param name="modifiedUser"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [ProducesResponseType<UserResponse>(200)]
+        [ProducesResponseType<ValidationResponse>(400)]
+        public async Task<UserResponse> Put(UpdateUserRequest modifiedUser)
+        {
+            return await _updateUserUseCase.Update(
+                modifiedUser ?? new UpdateUserRequest(Guid.Empty, "", "", "")
+            );
+        }
 
         // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public void Delete(int id) { }
 
         /// <summary>

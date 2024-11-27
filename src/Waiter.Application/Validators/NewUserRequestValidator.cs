@@ -4,11 +4,11 @@ using Waiter.Application.Security;
 
 namespace Waiter.Application.Validators
 {
-    public class UserRequestValidator : AbstractValidator<UserRequest>
+    public class NewUserRequestValidator : AbstractValidator<NewUserRequest>
     {
         private readonly IIdentityService _identityService;
 
-        public UserRequestValidator(IIdentityService identityService)
+        public NewUserRequestValidator(IIdentityService identityService)
         {
             _identityService = identityService;
 
@@ -56,11 +56,11 @@ namespace Waiter.Application.Validators
                 .WithMessage("Email addresss informed is not valid.")
                 .WithErrorCode("EmailInvalid")
                 .MustAsync(
-                    async (userRequest, email, cancellationToken) =>
+                    async (email, cancellationToken) =>
                     {
                         var userIdExists = await _identityService.GetUserIdWithEmail(email);
 
-                        if (userIdExists == null || userIdExists == userRequest.Id)
+                        if (userIdExists == null)
                             return true;
 
                         return false;

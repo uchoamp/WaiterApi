@@ -1,7 +1,6 @@
 ﻿namespace Waiter.Application.Models.Request
 {
-    public record UserRequest(
-        Guid? Id,
+    public record NewUserRequest(
         string FirstName,
         string LastName,
         string Email,

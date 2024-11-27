@@ -4,26 +4,19 @@ using Waiter.Application.Validators;
 
 namespace Waiter.Application.UnitTests.Validators;
 
-public class UserRequestValidatorTest
+public class UpdateUserRequestValidatorTest
 {
-    private readonly UserRequestValidator _validator;
+    private readonly UpdateUserRequestValidator _validator;
     private readonly Mock<IIdentityService> _mockIdentityService;
-    private readonly UserRequest _validUser;
+    private readonly UpdateUserRequest _validUser;
 
-    public UserRequestValidatorTest()
+    public UpdateUserRequestValidatorTest()
     {
         _mockIdentityService = new Mock<IIdentityService>();
 
-        _validator = new UserRequestValidator(_mockIdentityService.Object);
+        _validator = new UpdateUserRequestValidator(_mockIdentityService.Object);
 
-        _validUser = new UserRequest(
-            null,
-            "Marcos",
-            "Uchoa",
-            "marcos@email.com",
-            "Password123!",
-            new[] { "admin" }
-        );
+        _validUser = new UpdateUserRequest(Guid.NewGuid(), "Marcos", "Uchoa", "marcos@email.com");
 
         _mockIdentityService
             .Setup(x => x.GetRolesAsync())
@@ -118,17 +111,10 @@ public class UserRequestValidatorTest
         result.IsValid.Should().BeTrue();
     }
 
-    [Theory]
-    [InlineData(null, new[] { "PasswordRequired" })]
-    [InlineData("", new[] { "PasswordRequired" })]
-    [InlineData("Pass12!", new[] { "PasswordAtLeast8" })]
-    [InlineData("pass123!", new[] { "PasswordUppercaseRequired" })]
-    [InlineData("PASS1234", new[] { "PasswordLowercaseRequired" })]
-    [InlineData("PASSword!", new[] { "PasswordNumberRequired" })]
-    [InlineData("Pass12345", new[] { "PasswordNoAlphaNumericRequired" })]
-    public async Task ShouldValidatedPasword(string password, string[] expectedCodes)
+    [Fact]
+    public async Task ShouldValidatedId()
     {
-        var user = _validUser with { Password = password };
+        var user = _validUser with { Id = Guid.Empty };
 
         var result = await _validator.ValidateAsync(user);
 
@@ -136,29 +122,16 @@ public class UserRequestValidatorTest
 
         var errorCodes = result.Errors.Select(x => x.ErrorCode);
 
-        errorCodes.Should().Contain(expectedCodes);
-    }
+        errorCodes.Should().Contain(new[] { "IdRequired" });
 
-    [Theory]
-    [InlineData(null, new[] { "admin" }, new[] { "RolesRequired" })]
-    [InlineData(new string[0], new[] { "admin" }, new[] { "RolesValidRequired" })]
-    [InlineData(new[] { "no-admin", "admin" }, new[] { "admin" }, new[] { "RolesValidRequired" })]
-    public async Task ShouldValidatedRoles(
-        string[] roles,
-        string[] databaseRoles,
-        string[] expectedCodes
-    )
-    {
-        _mockIdentityService.Setup(x => x.GetRolesAsync()).ReturnsAsync(databaseRoles.ToHashSet());
+        user = _validUser with { Id = Guid.NewGuid() };
 
-        var user = _validUser with { Roles = roles };
-
-        var result = await _validator.ValidateAsync(user);
+        result = await _validator.ValidateAsync(user);
 
         result.IsValid.Should().BeFalse();
 
-        var errorCodes = result.Errors.Select(x => x.ErrorCode);
+        errorCodes = result.Errors.Select(x => x.ErrorCode);
 
-        errorCodes.Should().Contain(expectedCodes);
+        errorCodes.Should().Contain(new[] { "UserNotFoundForId" });
     }
 }

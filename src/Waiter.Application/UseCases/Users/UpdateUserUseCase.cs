@@ -7,28 +7,28 @@ using Waiter.Application.Validators;
 
 namespace Waiter.Application.UseCases.Users
 {
-    public class CreateUserUseCase
+    public class UpdateUserUseCase
     {
         private readonly IIdentityService _identityService;
 
-        public CreateUserUseCase(IIdentityService identityService)
+        public UpdateUserUseCase(IIdentityService identityService)
         {
             _identityService = identityService;
         }
 
-        public async Task<UserResponse> Create(NewUserRequest newUser)
+        public async Task<UserResponse> Update(UpdateUserRequest modifiedUser)
         {
-            var validator = new NewUserRequestValidator(_identityService);
-            var validationResult = await validator.ValidateAsync(newUser);
+            var validator = new UpdateUserRequestValidator(_identityService);
+            var validationResult = await validator.ValidateAsync(modifiedUser);
 
             if (!validationResult.IsValid)
             {
                 throw new ApplicationValidationException(validationResult);
             }
 
-            await _identityService.CreateUserAsync(newUser);
+            await _identityService.UpdateUserAsync(modifiedUser);
 
-            var user = await _identityService.GetUserByEmailAsync(newUser.Email);
+            var user = await _identityService.GetUserAsync(modifiedUser.Id);
 
             return user!;
         }

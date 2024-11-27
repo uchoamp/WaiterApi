@@ -5,8 +5,8 @@ namespace Waiter.Application.Security
 {
     public interface IIdentityService
     {
-        Task CreateUserAsync(UserRequest userRequest);
-        Task UpdateUserAsync(UserRequest userRequest);
+        Task CreateUserAsync(NewUserRequest userRequest);
+        Task UpdateUserAsync(UpdateUserRequest modifiedUser);
         Task DeleteUserAsync(Guid id);
         Task<UserResponse[]> GetUsersAsync();
         Task<UserResponse?> GetUserAsync(Guid id);
