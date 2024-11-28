@@ -67,3 +67,14 @@ Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 
 ###
+
+POST {{Waiter.API_HostAddress}}/customers
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+{
+  "firstName": "Marcos",
+  "lastName": "Uchoa",
+  "phoneNumber": "86981732889"
+}
+
+###

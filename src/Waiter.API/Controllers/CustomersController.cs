@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Waiter.Application.Models.Common;
-using Waiter.Application.Models.Users;
+using Waiter.Application.Models.Customers;
+using Waiter.Application.UseCases.Customers;
 using Waiter.Domain.Constants;
 
 namespace Waiter.API.Controllers
@@ -16,60 +17,69 @@ namespace Waiter.API.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     public class CustomersController : ControllerBase
     {
-        public CustomersController() { }
+        private readonly CreateCustomerUseCase _createCustomerUseCase;
 
         /// <summary>
-        /// Load all users
+        ///
+        /// </summary>
+        /// <param name="createCustomerUseCase"></param>
+        public CustomersController(CreateCustomerUseCase createCustomerUseCase)
+        {
+            _createCustomerUseCase = createCustomerUseCase;
+        }
+
+        /// <summary>
+        /// List customers with pagination
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<UserResponse[]> Get()
+        public async Task<CustomerResponse[]> Get()
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Get user by Id
+        /// Get customer by Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType<UserResponse>(200)]
+        [ProducesResponseType<CustomerResponse>(200)]
         [ProducesResponseType<MessageResponse>(404)]
-        public async Task<UserResponse> Get(Guid id)
+        public async Task<CustomerResponse> Get(Guid id)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Create a user with roles
+        /// Create a customer
         /// </summary>
-        /// <param name="userRequset"></param>
+        /// <param name="newCustomer"></param>
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = Roles.Admin)]
-        [ProducesResponseType<UserResponse>(201)]
+        [ProducesResponseType<CustomerResponse>(201)]
         [ProducesResponseType<ValidationResponse>(400)]
-        public async Task<UserResponse> Post(NewUserRequest userRequset)
+        public async Task<CustomerResponse> Post(CustomerRequest newCustomer)
         {
-            throw new NotImplementedException();
+            return await _createCustomerUseCase.Create(newCustomer);
         }
 
         /// <summary>
-        /// Update user details
+        /// Update customer
         /// </summary>
-        /// <param name="modifiedUser"></param>
+        /// <param name="updateCustomer"></param>
         /// <returns></returns>
-        [HttpPut]
-        [ProducesResponseType<UserResponse>(200)]
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType<CustomerResponse>(200)]
         [ProducesResponseType<ValidationResponse>(400)]
-        public async Task<UserResponse> Put(UpdateUserRequest modifiedUser)
+        public async Task<CustomerResponse> Put(Guid id, CustomerRequest updateCustomer)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Delete a user
+        /// Delete a customer
         /// </summary>
         /// <param name="id">User Id</param>
         /// <returns></returns>

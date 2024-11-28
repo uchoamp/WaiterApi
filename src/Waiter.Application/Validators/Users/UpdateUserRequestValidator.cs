@@ -2,7 +2,7 @@
 using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
 
-namespace Waiter.Application.Validators
+namespace Waiter.Application.Validators.Users
 {
     public class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>
     {
@@ -13,6 +13,7 @@ namespace Waiter.Application.Validators
             _identityService = identityService;
 
             RuleFor(x => x.Id)
+                .Cascade(CascadeMode.Stop)
                 .NotEqual(Guid.Empty)
                 .WithMessage("Id is required.")
                 .WithErrorCode("IdRequired")
@@ -24,8 +25,7 @@ namespace Waiter.Application.Validators
                     }
                 )
                 .WithMessage("User not found.")
-                .WithErrorCode("UserNotFoundForId")
-                .When(x => x.Id != Guid.Empty, ApplyConditionTo.CurrentValidator);
+                .WithErrorCode("UserNotFoundForId");
 
             RuleFor(x => x.FirstName)
                 .NotEmpty()
@@ -52,6 +52,7 @@ namespace Waiter.Application.Validators
                 .WithErrorCode("PhoneNumberInvalid");
 
             RuleFor(x => x.Email)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Email is required.")
                 .WithErrorCode("EmailRequired")
@@ -70,8 +71,7 @@ namespace Waiter.Application.Validators
                     }
                 )
                 .WithMessage("Email already registered.")
-                .WithErrorCode("EmailAlreadyRegistered")
-                .When(x => !string.IsNullOrWhiteSpace(x.Email), ApplyConditionTo.CurrentValidator);
+                .WithErrorCode("EmailAlreadyRegistered");
         }
     }
 }

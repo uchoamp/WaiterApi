@@ -1,13 +1,17 @@
-﻿using System.Text;
+﻿using System.Net.NetworkInformation;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Waiter.Application.Models.Customers;
 using Waiter.Application.Security;
 using Waiter.Domain.Constants;
 using Waiter.Domain.Models;
+using Waiter.Domain.Repositories;
 using Waiter.Infra.Data;
+using Waiter.Infra.Repositories;
 using Waiter.Infra.Security;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -62,6 +66,14 @@ public static class DependencyInjection
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddSingleton<ITokenProvider, JwtTokenProvider>();
 
+        AddRepositories(services);
+
         return services;
+    }
+
+    private static void AddRepositories(IServiceCollection services)
+    {
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<ICustomerRepository<CustomerFilter>, CustomerRepository>();
     }
 }

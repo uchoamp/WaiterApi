@@ -2,7 +2,7 @@
 using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
 
-namespace Waiter.Application.Validators
+namespace Waiter.Application.Validators.Users
 {
     public class NewUserRequestValidator : AbstractValidator<NewUserRequest>
     {

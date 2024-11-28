@@ -19,6 +19,7 @@ namespace Waiter.Infra.Repositories
 
         public async Task CreateAsync(TEntity entity)
         {
+            entity.CreatedAt = DateTime.UtcNow;
             await DbSet.AddAsync(entity);
         }
 
@@ -64,6 +65,7 @@ namespace Waiter.Infra.Repositories
 
         public void UpdateAsync(TEntity entity)
         {
+            entity.UpdatedAt = DateTime.UtcNow;
             DbContext.Entry(entity).State = EntityState.Modified;
         }
 
@@ -74,6 +76,11 @@ namespace Waiter.Infra.Repositories
         )
         {
             return await query.Skip(pageSize * (currentPage - 1)).Take(pageSize).ToListAsync();
+        }
+
+        public async Task<bool> ExistsEntity(Guid id)
+        {
+            return await DbSet.AnyAsync(x => x.Id == id);
         }
     }
 

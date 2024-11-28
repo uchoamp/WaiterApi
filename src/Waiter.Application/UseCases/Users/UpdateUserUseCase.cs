@@ -1,7 +1,7 @@
 ﻿using Waiter.Application.Exceptions;
 using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
-using Waiter.Application.Validators;
+using Waiter.Application.Validators.Users;
 
 namespace Waiter.Application.UseCases.Users
 {

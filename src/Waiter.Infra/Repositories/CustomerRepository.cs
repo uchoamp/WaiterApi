@@ -8,7 +8,8 @@ namespace Waiter.Infra.Repositories
 {
     public class CustomerRepository
         : BaseRepository<Customer, CustomerFilter>,
-            ICustomerRepository<CustomerFilter>
+            ICustomerRepository<CustomerFilter>,
+            ICustomerRepository
     {
         public CustomerRepository(ApplicationDbContext dbContext)
             : base(dbContext) { }
@@ -45,6 +46,14 @@ namespace Waiter.Infra.Repositories
                 .AsNoTracking()
                 .Where(x => x.FirstName.Contains(filter.Name) || x.LastName.Contains(filter.Name))
                 .ToListAsync();
+        }
+
+        public async Task<Guid> FindIdWithPhoneNumbe(string phoneNumbe)
+        {
+            return await DbSet
+                .Where(x => x.PhoneNumber == phoneNumbe)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
         }
     }
 }

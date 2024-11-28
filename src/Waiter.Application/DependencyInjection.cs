@@ -1,4 +1,5 @@
-﻿using Waiter.Application.UseCases.Users;
+﻿using Waiter.Application.UseCases.Customers;
+using Waiter.Application.UseCases.Users;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,8 @@ public static class DependencyInjection
         services.AddScoped<GetUserUseCase>();
         services.AddScoped<UpdateUserUseCase>();
         services.AddScoped<DeleteUserUseCase>();
+
+        services.AddScoped<CreateCustomerUseCase>();
 
         return services;
     }

@@ -11,6 +11,7 @@ namespace Waiter.Domain.Repositories
         public Task CreateAsync(TEntity entity);
         public void UpdateAsync(TEntity entity);
         public void DeleteAsync(TEntity entity);
+        public Task<bool> ExistsEntity(Guid id);
         public Task SaveChangesAsync();
     }
 
