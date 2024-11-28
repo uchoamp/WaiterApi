@@ -12,6 +12,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<MenuItem> MenuItems => Set<MenuItem>();
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<OrderItem> OrderItems => Set<OrderItem>();
 
     /// <summary>
     ///
@@ -20,6 +22,31 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<Customer>().HasIndex(x => x.PhoneNumber, "IX_Customer_PhoneNumber");
+
+        builder.Entity<OrderItem>().HasKey(x => new { x.OrderId, x.ItemId });
+
+        builder
+            .Entity<OrderItem>()
+            .HasOne(x => x.Item)
+            .WithMany(x => x.Orders)
+            .HasForeignKey(x => x.ItemId);
+
+        builder.Entity<OrderItem>().Navigation(x => x.Item).AutoInclude();
+
+        builder
+            .Entity<Order>()
+            .HasOne(x => x.Customer)
+            .WithMany(x => x.Orders)
+            .HasForeignKey(x => x.CustomerId);
+
+        builder
+            .Entity<Order>()
+            .HasMany(x => x.Items)
+            .WithOne(x => x.Order)
+            .HasForeignKey(x => x.OrderId);
+
+        builder.Entity<Order>().Navigation(x => x.Items).AutoInclude();
+        builder.Entity<Order>().Navigation(x => x.Customer).AutoInclude();
 
         base.OnModelCreating(builder);
     }

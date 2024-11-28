@@ -10,4 +10,6 @@ public class MenuItem : BaseEntity
     public required string Name { get; set; }
 
     public required int PriceCents { get; set; }
+
+    public ICollection<OrderItem> Orders { get; set; }
 }

@@ -17,28 +17,28 @@ namespace Waiter.Infra.Repositories
             DbSet = DbContext.Set<TEntity>();
         }
 
-        public async Task CreateAsync(TEntity entity)
+        public virtual async Task CreateAsync(TEntity entity)
         {
             entity.CreatedAt = DateTime.UtcNow;
             await DbSet.AddAsync(entity);
         }
 
-        public void Delete(TEntity entity)
+        public virtual void Delete(TEntity entity)
         {
             DbContext.Entry(entity).State = EntityState.Deleted;
         }
 
-        public async Task<TEntity> GetByIdAsync(Guid id)
+        public virtual async Task<TEntity> GetByIdAsync(Guid id)
         {
             return await DbSet.FirstAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<TEntity>> LoadAllAsync()
+        public virtual async Task<IEnumerable<TEntity>> LoadAllAsync()
         {
             return await DbSet.ToListAsync();
         }
 
-        public async Task<PaginatedResult<TEntity>> PaginateAsync(PaginationLimits limits)
+        public virtual async Task<PaginatedResult<TEntity>> PaginateAsync(PaginationLimits limits)
         {
             var baseQuery = DbSet.AsNoTracking().OrderByDescending(x => x.CreatedAt);
 
@@ -58,12 +58,12 @@ namespace Waiter.Infra.Repositories
             );
         }
 
-        public async Task SaveChangesAsync()
+        public virtual async Task SaveChangesAsync()
         {
             await DbContext.SaveChangesAsync();
         }
 
-        public void Update(TEntity entity)
+        public virtual void Update(TEntity entity)
         {
             entity.UpdatedAt = DateTime.UtcNow;
             DbContext.Entry(entity).State = EntityState.Modified;
@@ -81,6 +81,16 @@ namespace Waiter.Infra.Repositories
         public async Task<bool> ExistsEntity(Guid id)
         {
             return await DbSet.AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<List<TEntity>> GetEntitiesWithIds(params Guid[] ids)
+        {
+            return await DbSet.AsNoTracking().Where(x => ids.Contains(x.Id)).ToListAsync();
+        }
+
+        public virtual async Task RefreshAsync(TEntity entity)
+        {
+            await DbContext.Entry(entity).ReloadAsync();
         }
     }
 
