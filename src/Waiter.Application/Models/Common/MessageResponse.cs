@@ -1,4 +1,4 @@
-﻿namespace Waiter.Application.Models.Response
+﻿namespace Waiter.Application.Models.Common
 {
     public record MessageResponse(string Message) { }
 }

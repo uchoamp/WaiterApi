@@ -26,9 +26,10 @@ Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 {
   "firstName": "Marcos",
-  "lastName": "Uchoa",
-  "email": "marcos@uchoamp.dev",
+  "lastName": "Pacheco",
+  "email": "pacheco@uchoamp.dev",
   "password": "Pass1234!",
+  "phoneNumber": "86981732880",
   "roles": [
     "admin"
   ]
@@ -52,15 +53,56 @@ PUT {{Waiter.API_HostAddress}}/users
 Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 {
-  "id": "01936a3b-c458-705f-953d-36b98e4bed95",
+  "id": "01936b96-991d-77bc-b66d-9491bc058567",
   "firstName": "Marcos",
   "lastName": "Uchoa",
-  "email": "marcos@uchoamp.dev"
+  "email": "marcos@uchoamp.dev",
+  "phoneNumber": "86981732880"
 }
 
 ###
 
 DELETE {{Waiter.API_HostAddress}}/users/01936a3b-c458-705f-953d-36b98e4bed95
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###
+
+POST {{Waiter.API_HostAddress}}/customers
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+{
+  "firstName": "Marcos",
+  "lastName": "Uchoa",
+  "phoneNumber": "8881732889"
+}
+
+###
+
+GET {{Waiter.API_HostAddress}}/customers?page=1&pageSize=10
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###
+
+GET {{Waiter.API_HostAddress}}/customers/01937045-071e-7aea-9eb4-3982ffdf003d
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###
+
+PUT {{Waiter.API_HostAddress}}/customers/01937045-071e-7aea-9eb4-3982ffdf003d
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+{
+  "firstName": "Foo",
+  "lastName": "Bar",
+  "phoneNumber": "(88) 98173-2880"
+}
+
+###
+
+DELETE {{Waiter.API_HostAddress}}/customers/01937040-3235-72e2-9b03-3cbe481cc2c0
 Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 

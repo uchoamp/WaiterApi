@@ -1,28 +1,41 @@
-using Waiter.Application.Models.Request;
+using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
-using Waiter.Application.Validators;
+using Waiter.Application.Validators.Users;
 
 namespace Waiter.Application.UnitTests.Validators;
 
-public class UserRequestValidatorTest
+public class UpdateUserRequestValidatorTest
 {
-    private readonly NewUserRequestValidator _validator;
+    private readonly UpdateUserRequestValidator _validator;
     private readonly Mock<IIdentityService> _mockIdentityService;
-    private readonly NewUserRequest _validUser;
+    private readonly UpdateUserRequest _validUser;
 
-    public UserRequestValidatorTest()
+    public UpdateUserRequestValidatorTest()
     {
-        _mockIdentityService = new Mock<IIdentityService>();
-
-        _validator = new NewUserRequestValidator(_mockIdentityService.Object);
-
-        _validUser = new NewUserRequest(
+        _validUser = new UpdateUserRequest(
+            Guid.NewGuid(),
             "Marcos",
             "Uchoa",
-            "marcos@email.com",
-            "Password123!",
-            new[] { "admin" }
+            "86981732880",
+            "marcos@email.com"
         );
+
+        _mockIdentityService = new Mock<IIdentityService>();
+
+        _mockIdentityService
+            .Setup(x => x.GetUserAsync(_validUser.Id))
+            .ReturnsAsync(
+                new UserResponse(
+                    _validUser.Id,
+                    _validUser.FirstName,
+                    _validUser.LastName,
+                    _validUser.Email,
+                    _validUser.PhoneNumber,
+                    new string[0]
+                )
+            );
+
+        _validator = new UpdateUserRequestValidator(_mockIdentityService.Object);
 
         _mockIdentityService
             .Setup(x => x.GetRolesAsync())
@@ -103,17 +116,23 @@ public class UserRequestValidatorTest
         errorCodes.Should().Contain(new[] { "EmailAlreadyRegistered" });
     }
 
-    [Theory]
-    [InlineData(null, new[] { "PasswordRequired" })]
-    [InlineData("", new[] { "PasswordRequired" })]
-    [InlineData("Pass12!", new[] { "PasswordAtLeast8" })]
-    [InlineData("pass123!", new[] { "PasswordUppercaseRequired" })]
-    [InlineData("PASS1234", new[] { "PasswordLowercaseRequired" })]
-    [InlineData("PASSword!", new[] { "PasswordNumberRequired" })]
-    [InlineData("Pass12345", new[] { "PasswordNoAlphaNumericRequired" })]
-    public async Task ShouldValidatedPasword(string password, string[] expectedCodes)
+    [Fact]
+    public async Task ShouldBeValidIfEmailIsTheSameOnUpdate()
     {
-        var user = _validUser with { Password = password };
+        var email = "teste@email.com";
+        var user = _validUser with { Email = email };
+
+        _mockIdentityService.Setup(x => x.GetUserIdWithEmail(email)).ReturnsAsync(_validUser.Id);
+
+        var result = await _validator.ValidateAsync(user);
+
+        result.IsValid.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task ShouldValidatedId()
+    {
+        var user = _validUser with { Id = Guid.Empty };
 
         var result = await _validator.ValidateAsync(user);
 
@@ -121,22 +140,30 @@ public class UserRequestValidatorTest
 
         var errorCodes = result.Errors.Select(x => x.ErrorCode);
 
-        errorCodes.Should().Contain(expectedCodes);
+        errorCodes.Should().Contain(new[] { "IdRequired" });
+
+        user = _validUser with { Id = Guid.NewGuid() };
+
+        result = await _validator.ValidateAsync(user);
+
+        result.IsValid.Should().BeFalse();
+
+        errorCodes = result.Errors.Select(x => x.ErrorCode);
+
+        errorCodes.Should().Contain(new[] { "UserNotFoundForId" });
     }
 
     [Theory]
-    [InlineData(null, new[] { "admin" }, new[] { "RolesRequired" })]
-    [InlineData(new string[0], new[] { "admin" }, new[] { "RolesValidRequired" })]
-    [InlineData(new[] { "no-admin", "admin" }, new[] { "admin" }, new[] { "RolesValidRequired" })]
-    public async Task ShouldValidatedRoles(
-        string[] roles,
-        string[] databaseRoles,
-        string[] expectedCodes
-    )
+    [InlineData(null, new[] { "PhoneNumberRequired" })]
+    [InlineData("", new[] { "PhoneNumberRequired" })]
+    [InlineData("1234", new[] { "PhoneNumberInvalid" })]
+    [InlineData("869817328800", new[] { "PhoneNumberInvalid" })]
+    [InlineData("06981732880", new[] { "PhoneNumberInvalid" })]
+    [InlineData("8601732880", new[] { "PhoneNumberInvalid" })]
+    [InlineData("+55 (86) 98173-2880", new[] { "PhoneNumberInvalid" })]
+    public async Task ShouldValidatedPhoneNumber(string phoneNumber, string[] expectedCodes)
     {
-        _mockIdentityService.Setup(x => x.GetRolesAsync()).ReturnsAsync(databaseRoles.ToHashSet());
-
-        var user = _validUser with { Roles = roles };
+        var user = _validUser with { PhoneNumber = phoneNumber };
 
         var result = await _validator.ValidateAsync(user);
 

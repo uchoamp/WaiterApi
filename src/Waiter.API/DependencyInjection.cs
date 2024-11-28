@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Waiter.API.Custom;
+using Waiter.API.Services;
+using Waiter.Application.Interfaces;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -66,6 +68,9 @@ public static class DependencyInjection
         >();
 
         services.AddControllers();
+
+        services.AddScoped<IUser, CurrentUser>();
+        services.AddHttpContextAccessor();
 
         return services;
     }

@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using Waiter.Application.Models.Request;
+using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
 
-namespace Waiter.Application.Validators
+namespace Waiter.Application.Validators.Users
 {
     public class NewUserRequestValidator : AbstractValidator<NewUserRequest>
     {
@@ -27,6 +27,14 @@ namespace Waiter.Application.Validators
                 .MinimumLength(2)
                 .WithMessage("Last name must be at least 2 characters.")
                 .WithErrorCode("LastNameInvalid");
+
+            RuleFor(x => x.PhoneNumber)
+                .NotEmpty()
+                .WithMessage("Phone number is required.")
+                .WithErrorCode("PhoneNumberRequired")
+                .Matches(@"^\(?[1-9]\d\)? ?9\d{4}-?\d{4}$")
+                .WithMessage("Phone number informed is not valid.")
+                .WithErrorCode("PhoneNumberInvalid");
 
             RuleFor(x => x.Password)
                 .NotEmpty()

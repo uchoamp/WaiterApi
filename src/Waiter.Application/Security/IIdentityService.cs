@@ -1,5 +1,4 @@
-﻿using Waiter.Application.Models.Request;
-using Waiter.Application.Models.Response;
+﻿using Waiter.Application.Models.Users;
 
 namespace Waiter.Application.Security
 {

@@ -1,4 +1,4 @@
-﻿using Waiter.Application.Models.Response;
+﻿using Waiter.Application.Models.Common;
 
 namespace Waiter.Application.Security
 {

@@ -1,8 +1,8 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Waiter.Application.Models.Request;
-using Waiter.Application.Models.Response;
+using Waiter.Application.Models.Common;
+using Waiter.Application.Models.Users;
 using Waiter.Application.UseCases.Users;
 using Waiter.Domain.Constants;
 
@@ -109,7 +109,7 @@ namespace Waiter.API.Controllers
         public async Task<UserResponse> Put(UpdateUserRequest modifiedUser)
         {
             return await _updateUserUseCase.Update(
-                modifiedUser ?? new UpdateUserRequest(Guid.Empty, "", "", "")
+                modifiedUser ?? new UpdateUserRequest(Guid.Empty, "", "", "", "")
             );
         }
 

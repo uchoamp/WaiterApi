@@ -1,4 +1,4 @@
-﻿namespace Waiter.Application.Models.Request
+﻿namespace Waiter.Application.Models.Users
 {
     public record UserCredentialResquest(string Email, string Password) { }
 }

@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Waiter.Application.Models.Response;
+using Waiter.Application.Models.Common;
 using Waiter.Application.Security;
 using Waiter.Domain.Constants;
 

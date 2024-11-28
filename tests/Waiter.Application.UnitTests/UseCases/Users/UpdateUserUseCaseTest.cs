@@ -1,6 +1,5 @@
 using Waiter.Application.Exceptions;
-using Waiter.Application.Models.Request;
-using Waiter.Application.Models.Response;
+using Waiter.Application.Models.Users;
 using Waiter.Application.Security;
 using Waiter.Application.UseCases.Users;
 
@@ -22,7 +21,13 @@ public class UpdateUserUseCaseTest
 
         _sut = new UpdateUserUseCase(_mockIdentityService.Object);
 
-        _validUser = new UpdateUserRequest(Guid.NewGuid(), "Marcos", "Uchoa", "marcos@email.com");
+        _validUser = new UpdateUserRequest(
+            Guid.NewGuid(),
+            "Marcos",
+            "Uchoa",
+            "86981732880",
+            "marcos@email.com"
+        );
     }
 
     [Fact]
@@ -48,6 +53,7 @@ public class UpdateUserUseCaseTest
             _validUser.FirstName,
             _validUser.LastName,
             _validUser.Email,
+            _validUser.PhoneNumber,
             new[] { "admin" }
         );
 
@@ -57,7 +63,7 @@ public class UpdateUserUseCaseTest
         var result = await _sut.Update(_validUser);
 
         _mockIdentityService.Verify(x => x.UpdateUserAsync(_validUser), Times.Once);
-        _mockIdentityService.Verify(x => x.GetUserAsync(_validUser.Id), Times.Once);
+        _mockIdentityService.Verify(x => x.GetUserAsync(_validUser.Id), Times.Exactly(2));
 
         result.Should().Be(userResponse);
     }
