@@ -33,14 +33,14 @@ namespace Waiter.Application.Validators.Customers
                 .NotEmpty()
                 .WithMessage("Phone number is required.")
                 .WithErrorCode("PhoneNumberRequired")
-                .Matches(@"^\+? ?(?:55)? ?\(?[1-9]\d\)? ?(?:(?:9\d{4})|(?:[1-9]\d{3}))-?\d{4}$")
+                .Matches(@"^\(?[1-9]\d\)? ?9\d{4}-?\d{4}$")
                 .WithMessage("Phone number informed is not valid.")
                 .WithErrorCode("PhoneNumberInvalid")
                 .MustAsync(
                     async (phoneNumber, cancellationToken) =>
                     {
                         var customerIdExists = await _customerRepository.FindIdWithPhoneNumbe(
-                            phoneNumber
+                            phoneNumber.RemoveMask()
                         );
 
                         return customerIdExists == Guid.Empty || customerIdExists == id;

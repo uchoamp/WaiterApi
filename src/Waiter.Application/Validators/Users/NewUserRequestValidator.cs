@@ -32,7 +32,7 @@ namespace Waiter.Application.Validators.Users
                 .NotEmpty()
                 .WithMessage("Phone number is required.")
                 .WithErrorCode("PhoneNumberRequired")
-                .Matches(@"^\+? ?(?:55)? ?\(?[1-9]\d\)? ?(?:(?:9\d{4})|(?:[1-9]\d{3}))-?\d{4}$")
+                .Matches(@"^\(?[1-9]\d\)? ?9\d{4}-?\d{4}$")
                 .WithMessage("Phone number informed is not valid.")
                 .WithErrorCode("PhoneNumberInvalid");
 

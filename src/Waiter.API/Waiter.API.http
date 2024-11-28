@@ -74,12 +74,12 @@ Authorization: Bearer {{AccessToken}}
 {
   "firstName": "Marcos",
   "lastName": "Uchoa",
-  "phoneNumber": "86981732889"
+  "phoneNumber": "8881732889"
 }
 
 ###
 
-GET {{Waiter.API_HostAddress}}/customers?page=1&pageSize=1
+GET {{Waiter.API_HostAddress}}/customers?page=1&pageSize=10
 Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 
