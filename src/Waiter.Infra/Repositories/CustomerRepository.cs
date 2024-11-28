@@ -48,7 +48,7 @@ namespace Waiter.Infra.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Guid> FindIdWithPhoneNumbe(string phoneNumbe)
+        public async Task<Guid> FindIdWithPhoneNumber(string phoneNumbe)
         {
             return await DbSet
                 .Where(x => x.PhoneNumber == phoneNumbe)

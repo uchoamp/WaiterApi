@@ -86,7 +86,7 @@ public class CustomerRequestValidatorTest
     public async Task ShouldValidatedPhoneNumerAlreadyRegistered()
     {
         _mockCustomerRepository
-            .Setup(x => x.FindIdWithPhoneNumbe(_validCustomer.PhoneNumber))
+            .Setup(x => x.FindIdWithPhoneNumber(_validCustomer.PhoneNumber))
             .ReturnsAsync(Guid.NewGuid());
 
         var result = await _validator.ValidateAsync(_validCustomer);
@@ -105,7 +105,7 @@ public class CustomerRequestValidatorTest
         var validator = new CustomerRequestValidator(id, _mockCustomerRepository.Object);
 
         _mockCustomerRepository
-            .Setup(x => x.FindIdWithPhoneNumbe(_validCustomer.PhoneNumber))
+            .Setup(x => x.FindIdWithPhoneNumber(_validCustomer.PhoneNumber))
             .ReturnsAsync(id);
 
         var result = await validator.ValidateAsync(_validCustomer);
