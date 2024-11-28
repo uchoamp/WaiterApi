@@ -19,19 +19,23 @@ namespace Waiter.API.Controllers
     {
         private readonly CreateCustomerUseCase _createCustomerUseCase;
         private readonly GetCustomersPaginatedUseCase _getCustomersPaginatedUseCase;
+        private readonly GetCustomerUseCase _getCustomerUseCase;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="createCustomerUseCase"></param>
         /// <param name="getCustomersPaginatedUseCase"></param>
+        /// <param name="getCustomerUseCase"></param>
         public CustomersController(
             CreateCustomerUseCase createCustomerUseCase,
-            GetCustomersPaginatedUseCase getCustomersPaginatedUseCase
+            GetCustomersPaginatedUseCase getCustomersPaginatedUseCase,
+            GetCustomerUseCase getCustomerUseCase
         )
         {
             _createCustomerUseCase = createCustomerUseCase;
             _getCustomersPaginatedUseCase = getCustomersPaginatedUseCase;
+            _getCustomerUseCase = getCustomerUseCase;
         }
 
         /// <summary>
@@ -51,12 +55,12 @@ namespace Waiter.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType<CustomerResponse>(200)]
         [ProducesResponseType<MessageResponse>(404)]
         public async Task<CustomerResponse> Get(Guid id)
         {
-            throw new NotImplementedException();
+            return await _getCustomerUseCase.Get(id);
         }
 
         /// <summary>

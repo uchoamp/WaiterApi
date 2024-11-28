@@ -17,6 +17,7 @@ public static class DependencyInjection
 
         services.AddScoped<CreateCustomerUseCase>();
         services.AddScoped<GetCustomersPaginatedUseCase>();
+        services.AddScoped<GetCustomerUseCase>();
 
         return services;
     }
