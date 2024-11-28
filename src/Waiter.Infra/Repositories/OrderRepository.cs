@@ -1,4 +1,6 @@
-﻿using Waiter.Application.Interfaces;
+﻿using System.Data;
+using Microsoft.EntityFrameworkCore;
+using Waiter.Application.Interfaces;
 using Waiter.Domain.Models;
 using Waiter.Domain.Repositories;
 using Waiter.Infra.Data;
@@ -19,6 +21,14 @@ namespace Waiter.Infra.Repositories
         {
             entity.UpdatedBy = _user.Id!.Value;
             base.Update(entity);
+        }
+
+        public override async Task RefreshAsync(Order entity)
+        {
+            await DbContext.Entry(entity).ReloadAsync();
+            await DbContext.Entry(entity).Reference(x => x.Customer).LoadAsync();
+            DbContext.Entry(entity).Collection(x => x.Items).IsLoaded = false;
+            await DbContext.Entry(entity).Collection(x => x.Items).LoadAsync();
         }
     }
 }

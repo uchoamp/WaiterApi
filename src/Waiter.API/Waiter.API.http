@@ -145,3 +145,56 @@ Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 
 ###
+
+POST {{Waiter.API_HostAddress}}/orders
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+{
+  "customerId": "01937045-071e-7aea-9eb4-3982ffdf003d",
+  "items": [
+    {
+      "itemId": "0193711a-4daa-748a-8a30-686fa02c5ca6",
+      "quantity": 1
+    }
+  ]
+}
+
+###
+
+GET {{Waiter.API_HostAddress}}/orders?page=1&pageSize=10
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###
+
+GET {{Waiter.API_HostAddress}}/orders/0193743f-c074-75df-9526-7cffb7f4aa59
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###
+
+PUT {{Waiter.API_HostAddress}}/orders/0193743f-c074-75df-9526-7cffb7f4aa59
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+{
+  "customerId": "01937003-3aaf-7270-81f2-df99e7484ff8",
+  "items": [
+    {
+      "itemId": "01937437-75e6-7523-8b0e-86b035787135",
+      "quantity": 10
+    },
+    {
+      "itemId": "0193711a-4daa-748a-8a30-686fa02c5ca6",
+      "quantity": 2 
+    }
+  ]
+}
+
+
+###
+
+DELETE {{Waiter.API_HostAddress}}/orders/01937426-1c35-7c73-9d80-a86b91afc7da
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###

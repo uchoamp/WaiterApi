@@ -82,6 +82,16 @@ namespace Waiter.Infra.Repositories
         {
             return await DbSet.AnyAsync(x => x.Id == id);
         }
+
+        public async Task<List<TEntity>> GetEntitiesWithIds(params Guid[] ids)
+        {
+            return await DbSet.AsNoTracking().Where(x => ids.Contains(x.Id)).ToListAsync();
+        }
+
+        public virtual async Task RefreshAsync(TEntity entity)
+        {
+            await DbContext.Entry(entity).ReloadAsync();
+        }
     }
 
     public abstract class BaseRepository<TEntity, TFilter>

@@ -15,5 +15,8 @@ public class Customer : BaseEntity
     [MaxLength(15)]
     public required string PhoneNumber { get; set; }
 
+    [NotMapped]
+    public string FullName => FirstName + " " + LastName;
+
     public ICollection<Order> Orders { get; set; }
 }
