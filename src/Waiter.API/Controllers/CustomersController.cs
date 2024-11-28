@@ -21,6 +21,7 @@ namespace Waiter.API.Controllers
         private readonly GetCustomersPaginatedUseCase _getCustomersPaginatedUseCase;
         private readonly GetCustomerUseCase _getCustomerUseCase;
         private readonly UpdateCustomerUseCase _updateCustomerUseCase;
+        private readonly DeleteCustomerUseCase _deleteCustomerUseCase;
 
         /// <summary>
         ///
@@ -28,17 +29,21 @@ namespace Waiter.API.Controllers
         /// <param name="createCustomerUseCase"></param>
         /// <param name="getCustomersPaginatedUseCase"></param>
         /// <param name="getCustomerUseCase"></param>
+        /// <param name="updateCustomerUseCase"></param>
+        /// <param name="deleteCustomerUseCase"></param>
         public CustomersController(
             CreateCustomerUseCase createCustomerUseCase,
             GetCustomersPaginatedUseCase getCustomersPaginatedUseCase,
             GetCustomerUseCase getCustomerUseCase,
-            UpdateCustomerUseCase updateCustomerUseCase
+            UpdateCustomerUseCase updateCustomerUseCase,
+            DeleteCustomerUseCase deleteCustomerUseCase
         )
         {
             _createCustomerUseCase = createCustomerUseCase;
             _getCustomersPaginatedUseCase = getCustomersPaginatedUseCase;
             _getCustomerUseCase = getCustomerUseCase;
             _updateCustomerUseCase = updateCustomerUseCase;
+            _deleteCustomerUseCase = deleteCustomerUseCase;
         }
 
         /// <summary>
@@ -104,14 +109,14 @@ namespace Waiter.API.Controllers
         /// <summary>
         /// Delete a customer
         /// </summary>
-        /// <param name="id">User Id</param>
+        /// <param name="id">Customer Id</param>
         /// <returns></returns>
         [HttpDelete("{id:guid}")]
         [Authorize(Roles = Roles.Admin)]
         [ProducesResponseType<MessageResponse>(200)]
         public async Task<MessageResponse> Delete(Guid id)
         {
-            throw new NotImplementedException();
+            return await _deleteCustomerUseCase.Delete(id);
         }
     }
 }

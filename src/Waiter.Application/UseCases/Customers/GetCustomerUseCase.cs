@@ -1,6 +1,5 @@
 ﻿using Waiter.Application.Exceptions;
 using Waiter.Application.Models.Customers;
-using Waiter.Domain.Models;
 using Waiter.Domain.Repositories;
 
 namespace Waiter.Application.UseCases.Customers

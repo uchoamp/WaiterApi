@@ -16,7 +16,7 @@ namespace Waiter.Application.UseCases.Users
         {
             await _identityService.DeleteUserAsync(id);
 
-            return new MessageResponse("User has been deleted");
+            return new MessageResponse("User has been deleted.");
         }
     }
 }
