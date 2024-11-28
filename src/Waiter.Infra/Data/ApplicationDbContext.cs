@@ -31,6 +31,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .WithMany(x => x.Orders)
             .HasForeignKey(x => x.ItemId);
 
+        builder.Entity<OrderItem>().Navigation(x => x.Item).AutoInclude();
+
         builder
             .Entity<Order>()
             .HasOne(x => x.Customer)
@@ -42,6 +44,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .HasMany(x => x.Items)
             .WithOne(x => x.Order)
             .HasForeignKey(x => x.OrderId);
+
+        builder.Entity<Order>().Navigation(x => x.Items).AutoInclude();
+        builder.Entity<Order>().Navigation(x => x.Customer).AutoInclude();
 
         base.OnModelCreating(builder);
     }

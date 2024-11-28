@@ -76,5 +76,7 @@ public static class DependencyInjection
         services.AddScoped<ICustomerRepository<CustomerFilter>, CustomerRepository>();
 
         services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+
+        services.AddScoped<IOrderRepository, OrderRepository>();
     }
 }
