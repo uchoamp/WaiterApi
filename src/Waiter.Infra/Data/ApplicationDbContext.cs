@@ -11,6 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         : base(options) { }
 
     public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<MenuItem> MenuItems => Set<MenuItem>();
 
     /// <summary>
     ///
