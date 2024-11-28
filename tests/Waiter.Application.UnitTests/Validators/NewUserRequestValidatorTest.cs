@@ -155,6 +155,7 @@ public class UserRequestValidatorTest
     [InlineData("869817328800", new[] { "PhoneNumberInvalid" })]
     [InlineData("06981732880", new[] { "PhoneNumberInvalid" })]
     [InlineData("8601732880", new[] { "PhoneNumberInvalid" })]
+    [InlineData("+55 (86) 98173-2880", new[] { "PhoneNumberInvalid" })]
     public async Task ShouldValidatedPhoneNumber(string phoneNumber, string[] expectedCodes)
     {
         var user = _validUser with { PhoneNumber = phoneNumber };

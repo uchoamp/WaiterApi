@@ -90,3 +90,14 @@ Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 
 ###
+
+PUT {{Waiter.API_HostAddress}}/customers/01937045-071e-7aea-9eb4-3982ffdf003d
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+{
+  "firstName": "Foo",
+  "lastName": "Bar",
+  "phoneNumber": "(88) 98173-2880"
+}
+
+###

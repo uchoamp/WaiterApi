@@ -23,7 +23,7 @@ namespace Waiter.Infra.Repositories
             await DbSet.AddAsync(entity);
         }
 
-        public void DeleteAsync(TEntity entity)
+        public void Delete(TEntity entity)
         {
             DbContext.Entry(entity).State = EntityState.Deleted;
         }
@@ -63,7 +63,7 @@ namespace Waiter.Infra.Repositories
             await DbContext.SaveChangesAsync();
         }
 
-        public void UpdateAsync(TEntity entity)
+        public void Update(TEntity entity)
         {
             entity.UpdatedAt = DateTime.UtcNow;
             DbContext.Entry(entity).State = EntityState.Modified;

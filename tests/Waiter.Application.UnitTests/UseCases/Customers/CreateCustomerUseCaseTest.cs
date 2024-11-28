@@ -18,7 +18,7 @@ public class CreateCustomerUseCaseTest
 
         _sut = new CreateCustomerUseCase(_mockCustomerRepository.Object);
 
-        _validCustomer = new CustomerRequest("Marcos", "Uchoa", "+5586981732880");
+        _validCustomer = new CustomerRequest("Marcos", "Uchoa", "86981732880");
     }
 
     [Fact]

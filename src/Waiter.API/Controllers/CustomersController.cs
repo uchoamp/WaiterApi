@@ -20,6 +20,7 @@ namespace Waiter.API.Controllers
         private readonly CreateCustomerUseCase _createCustomerUseCase;
         private readonly GetCustomersPaginatedUseCase _getCustomersPaginatedUseCase;
         private readonly GetCustomerUseCase _getCustomerUseCase;
+        private readonly UpdateCustomerUseCase _updateCustomerUseCase;
 
         /// <summary>
         ///
@@ -30,12 +31,14 @@ namespace Waiter.API.Controllers
         public CustomersController(
             CreateCustomerUseCase createCustomerUseCase,
             GetCustomersPaginatedUseCase getCustomersPaginatedUseCase,
-            GetCustomerUseCase getCustomerUseCase
+            GetCustomerUseCase getCustomerUseCase,
+            UpdateCustomerUseCase updateCustomerUseCase
         )
         {
             _createCustomerUseCase = createCustomerUseCase;
             _getCustomersPaginatedUseCase = getCustomersPaginatedUseCase;
             _getCustomerUseCase = getCustomerUseCase;
+            _updateCustomerUseCase = updateCustomerUseCase;
         }
 
         /// <summary>
@@ -74,20 +77,28 @@ namespace Waiter.API.Controllers
         [ProducesResponseType<ValidationResponse>(400)]
         public async Task<CustomerResponse> Post(CustomerRequest newCustomer)
         {
-            return await _createCustomerUseCase.Create(newCustomer);
+            var customerReponse = await _createCustomerUseCase.Create(newCustomer);
+            var locationUser =
+                $"{Request.Scheme}://{Request.Host}{Request.Path}/{customerReponse.Id}";
+
+            Response.Headers["Location"] = locationUser;
+
+            return customerReponse;
         }
 
         /// <summary>
         /// Update customer
         /// </summary>
-        /// <param name="updateCustomer"></param>
+        /// <param name="id"></param>
+        /// <param name="customerRequest"></param>
         /// <returns></returns>
         [HttpPut("{id:guid}")]
         [ProducesResponseType<CustomerResponse>(200)]
         [ProducesResponseType<ValidationResponse>(400)]
-        public async Task<CustomerResponse> Put(Guid id, CustomerRequest updateCustomer)
+        [ProducesResponseType<MessageResponse>(404)]
+        public async Task<CustomerResponse> Put(Guid id, CustomerRequest customerRequest)
         {
-            throw new NotImplementedException();
+            return await _updateCustomerUseCase.Update(id, customerRequest);
         }
 
         /// <summary>
