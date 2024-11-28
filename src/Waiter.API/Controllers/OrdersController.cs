@@ -33,6 +33,7 @@ namespace Waiter.API.Controllers
         /// <param name="getOrderUseCase"></param>
         /// <param name="updateOrderUseCase"></param>
         /// <param name="deleteOrderUseCase"></param>
+        /// <param name="updateOrderStatusUseCase"></param>
         public OrdersController(
             CreateOrderUseCase createOrderUseCase,
             GetOrdersPaginatedUseCase getOrdersPaginatedUseCase,

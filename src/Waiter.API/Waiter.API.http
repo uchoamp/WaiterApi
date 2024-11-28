@@ -199,6 +199,22 @@ Authorization: Bearer {{AccessToken}}
 
 ###
 
-PATCH {{Waiter.API_HostAddress}}/orders/0193743f-c074-75df-9526-7cffb7f4aa59/status?status=3
+PATCH {{Waiter.API_HostAddress}}/orders/0193749d-1bff-7005-b61d-e9d4ffdbd8a1/status?status=3
 Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
+
+###
+
+POST {{Waiter.API_HostAddress}}/CustomerOrders
+Content-Type: application/json
+{
+  "firstName": "Foo",
+  "lastName": "Baar",
+  "phoneNumber": "99991732880",
+  "items": [
+    {
+      "itemId": "01937437-75e6-7523-8b0e-86b035787135",
+      "quantity": 1
+    }
+  ]
+}

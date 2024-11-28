@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Waiter.Application.Models.Orders;
 using Waiter.Application.Services;
+using Waiter.Application.UseCases.CustomerOrders;
 using Waiter.Application.UseCases.Customers;
 using Waiter.Application.UseCases.MenuItems;
 using Waiter.Application.UseCases.Orders;
@@ -49,6 +50,8 @@ public static class DependencyInjection
         services.AddScoped<UpdateOrderUseCase>();
         services.AddScoped<DeleteOrderUseCase>();
         services.AddScoped<UpdateOrderStatusUseCase>();
+
+        services.AddScoped<CreateCustomerOrderUseCase>();
     }
 
     private static void AddValidators(IServiceCollection services)

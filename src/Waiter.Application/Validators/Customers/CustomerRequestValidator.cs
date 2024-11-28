@@ -39,7 +39,7 @@ namespace Waiter.Application.Validators.Customers
                 .MustAsync(
                     async (phoneNumber, cancellationToken) =>
                     {
-                        var customerIdExists = await _customerRepository.FindIdWithPhoneNumbe(
+                        var customerIdExists = await _customerRepository.FindIdWithPhoneNumber(
                             phoneNumber.RemoveMask()
                         );
 
