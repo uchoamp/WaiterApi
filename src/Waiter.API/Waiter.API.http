@@ -107,3 +107,41 @@ Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 
 ###
+
+POST {{Waiter.API_HostAddress}}/menuItems
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+{
+  "Name": "Item 2",
+  "PriceCents": 10
+}
+
+###
+
+GET {{Waiter.API_HostAddress}}/menuItems?page=1&pageSize=10
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###
+
+GET {{Waiter.API_HostAddress}}/menuItems/0193711a-4daa-748a-8a30-686fa02c5ca6
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###
+
+PUT {{Waiter.API_HostAddress}}/menuItems/0193711a-4daa-748a-8a30-686fa02c5ca6
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+{
+  "name": "New Item 2",
+  "priceCents": 50
+}
+
+###
+
+DELETE {{Waiter.API_HostAddress}}/menuItems/01937119-d151-7380-92b0-7c5b97b5681a
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###

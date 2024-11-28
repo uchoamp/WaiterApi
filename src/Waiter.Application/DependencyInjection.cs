@@ -1,4 +1,5 @@
 ﻿using Waiter.Application.UseCases.Customers;
+using Waiter.Application.UseCases.MenuItems;
 using Waiter.Application.UseCases.Users;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,12 @@ public static class DependencyInjection
         services.AddScoped<GetCustomerUseCase>();
         services.AddScoped<UpdateCustomerUseCase>();
         services.AddScoped<DeleteCustomerUseCase>();
+
+        services.AddScoped<CreateMenuItemUseCase>();
+        services.AddScoped<GetMenuItemsPaginatedUseCase>();
+        services.AddScoped<GetMenuItemUseCase>();
+        services.AddScoped<UpdateMenuItemUseCase>();
+        services.AddScoped<DeleteMenuItemUseCase>();
 
         return services;
     }
