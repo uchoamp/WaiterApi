@@ -78,3 +78,9 @@ Authorization: Bearer {{AccessToken}}
 }
 
 ###
+
+GET {{Waiter.API_HostAddress}}/customers?page=1&pageSize=1
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+###

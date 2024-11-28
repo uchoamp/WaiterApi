@@ -18,24 +18,32 @@ namespace Waiter.API.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly CreateCustomerUseCase _createCustomerUseCase;
+        private readonly GetCustomersPaginatedUseCase _getCustomersPaginatedUseCase;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="createCustomerUseCase"></param>
-        public CustomersController(CreateCustomerUseCase createCustomerUseCase)
+        /// <param name="getCustomersPaginatedUseCase"></param>
+        public CustomersController(
+            CreateCustomerUseCase createCustomerUseCase,
+            GetCustomersPaginatedUseCase getCustomersPaginatedUseCase
+        )
         {
             _createCustomerUseCase = createCustomerUseCase;
+            _getCustomersPaginatedUseCase = getCustomersPaginatedUseCase;
         }
 
         /// <summary>
         /// List customers with pagination
         /// </summary>
+        /// <param name="page">Current page</param>
+        /// <param name="pageSize">Total itens per page</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<CustomerResponse[]> Get()
+        public async Task<CustomersPaginatedResponse> Get(int page = 1, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            return await _getCustomersPaginatedUseCase.Get(page, pageSize);
         }
 
         /// <summary>
