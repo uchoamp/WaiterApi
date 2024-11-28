@@ -14,4 +14,6 @@ public class Customer : BaseEntity
 
     [MaxLength(15)]
     public required string PhoneNumber { get; set; }
+
+    public ICollection<Order> Orders { get; set; }
 }
