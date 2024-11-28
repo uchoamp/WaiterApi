@@ -198,3 +198,7 @@ Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
 
 ###
+
+PATCH {{Waiter.API_HostAddress}}/orders/0193743f-c074-75df-9526-7cffb7f4aa59/status?status=3
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}

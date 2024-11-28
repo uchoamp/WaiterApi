@@ -48,6 +48,7 @@ public static class DependencyInjection
         services.AddScoped<GetOrderUseCase>();
         services.AddScoped<UpdateOrderUseCase>();
         services.AddScoped<DeleteOrderUseCase>();
+        services.AddScoped<UpdateOrderStatusUseCase>();
     }
 
     private static void AddValidators(IServiceCollection services)

@@ -5,6 +5,7 @@ using Waiter.Application.Models.Common;
 using Waiter.Application.Models.Orders;
 using Waiter.Application.UseCases.Orders;
 using Waiter.Domain.Constants;
+using Waiter.Domain.Enums;
 
 namespace Waiter.API.Controllers
 {
@@ -22,6 +23,7 @@ namespace Waiter.API.Controllers
         private readonly GetOrderUseCase _getOrderUseCase;
         private readonly UpdateOrderUseCase _updateOrderUseCase;
         private readonly DeleteOrderUseCase _deleteOrderUseCase;
+        private readonly UpdateOrderStatusUseCase _updateOrderStatusUseCase;
 
         /// <summary>
         ///
@@ -36,7 +38,8 @@ namespace Waiter.API.Controllers
             GetOrdersPaginatedUseCase getOrdersPaginatedUseCase,
             GetOrderUseCase getOrderUseCase,
             UpdateOrderUseCase updateOrderUseCase,
-            DeleteOrderUseCase deleteOrderUseCase
+            DeleteOrderUseCase deleteOrderUseCase,
+            UpdateOrderStatusUseCase updateOrderStatusUseCase
         )
         {
             _createOrderUseCase = createOrderUseCase;
@@ -44,6 +47,7 @@ namespace Waiter.API.Controllers
             _getOrderUseCase = getOrderUseCase;
             _updateOrderUseCase = updateOrderUseCase;
             _deleteOrderUseCase = deleteOrderUseCase;
+            _updateOrderStatusUseCase = updateOrderStatusUseCase;
         }
 
         /// <summary>
@@ -103,6 +107,20 @@ namespace Waiter.API.Controllers
         public async Task<OrderResponse> Put(Guid id, OrderRequest orderRequest)
         {
             return await _updateOrderUseCase.Update(id, orderRequest);
+        }
+
+        /// <summary>
+        /// Update Order Status
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        [HttpPatch("{id:guid}/status")]
+        [ProducesResponseType<OrderResponse>(200)]
+        [ProducesResponseType<MessageResponse>(404)]
+        public async Task<MessageResponse> PatchStatus(Guid id, OrderStatus status)
+        {
+            return await _updateOrderStatusUseCase.UpdateStatus(id, status);
         }
 
         /// <summary>
